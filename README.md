@@ -22,8 +22,7 @@ CREATE TABLE Team (
   TeamSize int,
   isBuild BOOLEAN,
   BuildTime TIME,
-  Arrangement varchar(255),
-  TeamDocumentID int,
+  Arrangement text,
   ReplyScore int,
   notice text
 );
@@ -77,10 +76,11 @@ CREATE TABLE Score (
   PRIMARY KEY (StudentID, TestPaperID, TeamID)
 );
 
+drop table TeamDocument;
 CREATE TABLE TeamDocument (
-  TeamDocumentID int,
+  TeamID int,
   DocumentID int,
-  PRIMARY KEY (TeamDocumentID, DocumentID)
+  PRIMARY KEY (TeamID, DocumentID)
 );
 
 CREATE TABLE Document (
@@ -90,3 +90,5 @@ CREATE TABLE Document (
 
 ```
 	
+<font size=5> 当你想查看后端controllor层接口时，可以先部署项目，将pom.xml中的依赖布置好，运行代码，输入网址：[swagger](http://localhost:8080/swagger-ui.html#)</font>  
+<font size=5> 具体的swagger界面使用可以上网参训</font>
