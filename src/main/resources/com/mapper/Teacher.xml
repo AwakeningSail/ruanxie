@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TeacherMapper">
+
+    <select id="getTeacherById" parameterType="String" resultType="com.Data.Teacher">
+        SELECT * FROM Teacher WHERE TeacherID = #{teacherId}
+    </select>
+
+    <select id="getTeacherByTelephone" parameterType="String" resultType="com.Data.Teacher">
+        SELECT * FROM Teacher WHERE TeacherID = #{Telephone}
+    </select>
+
+    <select id="getTeacherByEmail" parameterType="String" resultType="com.Data.Teacher">
+        SELECT * FROM Teacher WHERE TeacherID = #{Email}
+    </select>
+    <insert id="addTeacher" parameterType="com.Data.Teacher">
+        INSERT INTO Teacher (TeacherID, Name, Password, ClassID, Telephone, Email)
+        VALUES (#{teacherID}, #{name}, #{password}, #{classID}, #{telephone}, #{email})
+    </insert>
+
+    <update id="updateTeacher" parameterType="com.Data.Teacher">
+        UPDATE Teacher SET Name = #{name}, Password = #{password}, ClassID = #{classID}, Telephone = #{telephone}, Email = #{email}
+        WHERE TeacherID = #{teacherID}
+    </update>
+
+    <delete id="deleteTeacher" parameterType="String">
+        DELETE FROM Teacher WHERE TeacherID = #{teacherId}
+    </delete>
+
+    <select id="getAllTeachers" resultType="com.Data.Teacher">
+        SELECT * FROM Teacher
+    </select>
+
+</mapper>

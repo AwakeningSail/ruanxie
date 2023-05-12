@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+    <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql:///ruanxie"/>
+            <property name="username" value="root"/>
+            <property name="password" value="123456"/>
+        </dataSource>
+    </environment>
+    </environments>
+    <mappers>
+        <mapper resource="com/mapper/AnswerPaper.xml"/>
+        <mapper resource="com/mapper/Class.xml"/>
+        <mapper resource="com/mapper/Document.xml"/>
+        <mapper resource="com/mapper/Score.xml"/>
+        <mapper resource="com/mapper/Student.xml"/>
+        <mapper resource="com/mapper/Teacher.xml"/>
+        <mapper resource="com/mapper/Team.xml"/>
+        <mapper resource="com/mapper/TeamDocument.xml"/>
+        <mapper resource="com/mapper/TeamWork.xml"/>
+        <mapper resource="com/mapper/TestPaper.xml"/>
+    </mappers>
+</configuration>

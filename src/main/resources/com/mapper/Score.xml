@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.ScoreMapper">
+
+    <resultMap id="scoreResultMap" type="com.Data.Score">
+        <id property="studentID" column="student_id" />
+        <id property="testPaperID" column="test_paper_id" />
+        <id property="teamID" column="team_id" />
+        <result property="workScore" column="work_score" />
+        <result property="defenseScore" column="defense_score" />
+        <result property="examScore" column="exam_score" />
+        <result property="intragroupScore" column="intragroup_score" />
+    </resultMap>
+
+    <select id="getScoreById" parameterType="map" resultMap="scoreResultMap">
+        SELECT student_id, test_paper_id, team_id, work_score, defense_score, exam_score, intragroup_score
+        FROM score
+        WHERE student_id = #{studentId} AND test_paper_id = #{testPaperId} AND team_id = #{teamId}
+    </select>
+
+    <insert id="addScore" parameterType="com.Data.Score">
+        INSERT INTO score (student_id, test_paper_id, team_id, work_score, defense_score, exam_score, intragroup_score)
+        VALUES (#{studentID}, #{testPaperID}, #{teamID}, #{workScore}, #{defenseScore}, #{examScore}, #{intragroupScore})
+    </insert>
+
+    <update id="updateScore" parameterType="com.Data.Score">
+        UPDATE score
+        SET work_score = #{workScore}, defense_score = #{defenseScore}, exam_score = #{examScore}, intragroup_score = #{intragroupScore}
+        WHERE student_id = #{studentID} AND test_paper_id = #{testPaperID} AND team_id = #{teamID}
+    </update>
+
+    <delete id="deleteScore" parameterType="map">
+        DELETE FROM score
+        WHERE student_id = #{studentId} AND test_paper_id = #{testPaperId} AND team_id = #{teamId}
+    </delete>
+
+    <select id="getAllScores" resultMap="scoreResultMap">
+        SELECT student_id, test_paper_id, team_id, work_score, defense_score, exam_score, intragroup_score
+        FROM score
+    </select>
+
+</mapper>

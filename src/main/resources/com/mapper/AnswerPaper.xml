@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.AnswerPaperMapper">
+
+    <select id="getAnswerPaperById" resultType="com.Data.AnswerPaper">
+        SELECT * FROM answer_paper
+        WHERE student_id=#{studentId} AND test_paper_id=#{testPaperId}
+    </select>
+
+    <insert id="addAnswerPaper">
+        INSERT INTO answer_paper (student_id, test_paper_id, document_id)
+        VALUES (#{studentID}, #{testPaperID}, #{documentID})
+    </insert>
+
+    <update id="updateAnswerPaper">
+        UPDATE answer_paper
+        SET document_id=#{documentID}
+        WHERE student_id=#{studentID} AND test_paper_id=#{testPaperID}
+    </update>
+
+    <delete id="deleteAnswerPaper">
+        DELETE FROM answer_paper
+        WHERE student_id=#{studentId} AND test_paper_id=#{testPaperId}
+    </delete>
+
+    <select id="getAllAnswerPapers" resultType="com.Data.AnswerPaper">
+        SELECT * FROM answer_paper
+    </select>
+
+</mapper>

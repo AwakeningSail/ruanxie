@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TestPaperMapper">
+
+    <!-- 根据 teacherId 和 testPaperId 获取 TestPaper 对象 -->
+    <select id="getTestPaperById" parameterType="map" resultType="com.Data.TestPaper">
+        SELECT * FROM TestPaper WHERE TeacherID = #{teacherId} AND TestPaperID = #{testPaperId}
+    </select>
+
+    <!-- 添加新的 TestPaper 对象 -->
+    <insert id="addTestPaper" parameterType="com.Data.TestPaper">
+        INSERT INTO TestPaper (TeacherID, TestPaperID, DocumentID)
+        VALUES (#{teacherID}, #{testPaperID}, #{documentID})
+    </insert>
+
+    <!-- 更新已有的 TestPaper 对象 -->
+    <update id="updateTestPaper" parameterType="com.Data.TestPaper">
+        UPDATE TestPaper SET DocumentID = #{documentID}
+        WHERE TeacherID = #{teacherID} AND TestPaperID = #{testPaperID}
+    </update>
+
+    <!-- 根据 teacherId 和 testPaperId 删除 TestPaper 对象 -->
+    <delete id="deleteTestPaper" parameterType="map">
+        DELETE FROM TestPaper WHERE TeacherID = #{teacherId} AND TestPaperID = #{testPaperId}
+    </delete>
+
+    <!-- 获取所有 TestPaper 对象 -->
+    <select id="getAllTestPapers" resultType="com.Data.TestPaper">
+        SELECT * FROM TestPaper
+    </select>
+
+</mapper>

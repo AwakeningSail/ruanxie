@@ -1,0 +1,43 @@
+<!-- TeamMapper.xml -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.TeamMapper">
+
+    <!-- 根据 teamId 获取 Team -->
+    <select id="getTeamById" parameterType="int" resultType="com.Data.Team">
+        SELECT * FROM Team WHERE TeamID = #{teamId}
+    </select>
+
+    <!-- 添加 Team -->
+    <insert id="addTeam" parameterType="com.Data.Team">
+        INSERT INTO Team (TeamID, TeamSize, isBuild, BuildTime, Arrangement, TeamDocumentID, ReplyScore, notice)
+        VALUES (#{teamID}, #{teamSize}, #{isBuild}, #{buildTime}, #{arrangement}, #{teamDocumentID}, #{replyScore}, #{notice})
+    </insert>
+
+    <!-- 更新 Team -->
+    <update id="updateTeam" parameterType="com.Data.Team">
+        UPDATE Team SET
+                        TeamSize = #{teamSize},
+                        isBuild = #{isBuild},
+                        BuildTime = #{buildTime},
+                        Arrangement = #{arrangement},
+                        TeamDocumentID = #{teamDocumentID},
+                        ReplyScore = #{replyScore},
+                        notice = #{notice}
+        WHERE TeamID = #{teamID}
+    </update>
+
+    <!-- 根据 teamId 删除 Team -->
+    <delete id="deleteTeam" parameterType="int">
+        DELETE FROM Team WHERE TeamID = #{teamId}
+    </delete>
+
+    <!-- 获取所有 Team -->
+    <select id="getAllTeams" resultType="com.Data.Team">
+        SELECT * FROM Team
+    </select>
+
+</mapper>

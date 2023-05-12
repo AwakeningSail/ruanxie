@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.ClassMapper">
+
+    <resultMap id="classResultMap" type="com.Data.Class">
+        <id column="classID" property="classID"/>
+        <result column="classSize" property="classSize"/>
+        <result column="classBeginningTime" property="classBeginningTime"/>
+    </resultMap>
+
+    <select id="getClassById" parameterType="string" resultMap="classResultMap">
+        SELECT * FROM Class WHERE classID=#{classId}
+    </select>
+
+    <insert id="addClass" parameterType="com.Data.Class">
+        INSERT INTO Class (classID, classSize, classBeginningTime) VALUES (#{classID}, #{classSize}, #{classBeginningTime})
+    </insert>
+
+    <update id="updateClass" parameterType="com.Data.Class">
+        UPDATE Class SET classSize=#{classSize}, classBeginningTime=#{classBeginningTime} WHERE classID=#{classID}
+    </update>
+
+    <delete id="deleteClass" parameterType="string">
+        DELETE FROM Class WHERE classID=#{classId}
+    </delete>
+
+    <select id="getAllClasses" resultMap="classResultMap">
+        SELECT * FROM Class
+    </select>
+</mapper>

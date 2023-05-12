@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TeamworkMapper">
+
+    <resultMap id="teamworkResultMap" type="com.Data.Teamwork">
+        <id column="TeamID" property="teamID"/>
+        <result column="WorkArrangement" property="workArrangement"/>
+        <result column="MeetingMinutes" property="meetingMinutes"/>
+        <result column="Assignmentresults" property="assignmentResults"/>
+        <result column="Score" property="score"/>
+    </resultMap>
+
+    <select id="getTeamworkById" resultMap="teamworkResultMap">
+        SELECT * FROM Teamwork WHERE TeamID = #{teamId}
+    </select>
+
+    <insert id="addTeamwork" parameterType="com.Data.Teamwork">
+        INSERT INTO Teamwork (TeamID, WorkArrangement, MeetingMinutes, Assignmentresults, Score)
+        VALUES (#{teamID}, #{workArrangement}, #{meetingMinutes}, #{assignmentResults}, #{score})
+    </insert>
+
+    <update id="updateTeamwork" parameterType="com.Data.Teamwork">
+        UPDATE Teamwork SET WorkArrangement = #{workArrangement}, MeetingMinutes = #{meetingMinutes},
+                            Assignmentresults = #{assignmentResults}, Score = #{score} WHERE TeamID = #{teamID}
+    </update>
+
+    <delete id="deleteTeamwork" parameterType="int">
+        DELETE FROM Teamwork WHERE TeamID = #{teamId}
+    </delete>
+
+    <select id="getAllTeamworks" resultMap="teamworkResultMap">
+        SELECT * FROM Teamwork
+    </select>
+
+</mapper>

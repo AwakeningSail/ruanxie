@@ -1,0 +1,78 @@
+<!doctype html>
+<html class="x-admin-sm">
+
+<head>
+  <meta charset="UTF-8">
+  <title>图书管理系统登录</title>
+  <link rel="stylesheet" href="./css/font.css">
+  <link rel="stylesheet" href="./css/login.css">
+  <link rel="stylesheet" href="./css/xadmin.css">
+  <script src="./lib/layui/layui.js" charset="utf-8"></script>
+  <script src="./js/jquery-3.3.1.js" charset="utf-8"></script>
+</head>
+
+<body class="login-bg">
+
+  <div class="login layui-anim layui-anim-up">
+    <div class="message">图书管理注册系统</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form">
+      <input name="name" id="name" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+      <hr class="hr15">
+      <input name="telephone" id="telephone" placeholder="手机号" type="text" lay-verify="required" class="layui-input">
+      <hr class="hr15">
+      <input name="password" id="password" placeholder="密码" type="password" lay-verify="required" class="layui-input">
+      <hr class="hr15">
+      <div class="layui-form-item">
+        <label class="layui-form-label">注册类型:</label>
+        <div class="layui-input-block">
+          <input type="radio" name="type" value="1" title="会员" checked>
+        </div>
+      </div>
+      <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit">
+      <hr class="hr20">
+    </form>
+    <input value="返回" lay-submit lay-filter="return" style="width:100%;" type="submit" onClick="javascript:window.location.href='index.html';">
+  </div>
+
+  <script>
+    $(function () {
+      layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        form.on('submit(register)', function (data) {
+          $.ajax({
+            url: 'http://localhost:8080/user/Rigester',
+            type: 'post',
+            data: {
+              //action: 'Register',
+              name: $("#name").val(),
+              password: $("#password").val(),
+              telephone: $("#telephone").val()
+            },
+            dataType: 'json',
+            success: function (result) {
+              result = JSON.stringify(result);
+              result = $.parseJSON(result);
+              if (result.result != -1) { //注册成功
+                console.log(result);
+              	window.alert("注册成功！你的账号是；"+ result.result)
+                location.href = 'index.html';
+              }
+              else if (result.result == -1) {
+            	layer.msg("注册失败,手机号已被注册过", { icon: 5 });
+              }
+            },
+            error: function () {
+            	layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+			}
+          });
+          return false;
+        });
+      });
+    })
+  </script>
+</body>
+
+</html>

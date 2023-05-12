@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加图书信息</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">-->
+<!--                <span class="x-red">*</span>图书编号-->
+<!--            </label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" id="Book_ID" name="Book_ID" autocomplete="off"-->
+<!--                    placeholder="请输入图书编号 " class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Book_name" name="Book_name" autocomplete="off" placeholder="请输入图书名称"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书价格
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="cost" name="cost" class="layui-input" placeholder="请输入图书价格">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书介绍
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="introduction" name="introduction" class="layui-input"
+                    placeholder="请输入图书出版时间">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">添加</button>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+
+                // laydate.render({
+                //     elem: '#Book_ID',
+                //     trigger: 'click',
+                //     type: 'year'
+                // });
+            });
+
+            $("#btn1").click(function () {
+                var data = {
+                    Book_ID: $("#Book_ID").val(),
+                    Book_name: $("#Book_name").val(),
+                    cost: $("#cost").val(),
+                    introduction: $("#introduction").val(),
+                };
+
+                $.ajax({
+                    url: 'http://localhost:8080/manager/addbook',
+                    type: 'post',
+                    data: data,
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    success: function (result) {
+                    	result = JSON.stringify(result);
+                    	result = $.parseJSON(result);
+                        if (result.result == 0) { //成功
+                            layer.msg("添加图书信息成功!", {icon: 1});
+                        } else { //失败
+                            layer.msg("添加图书信息失败!", { icon: 5 });
+                        }
+                    },
+                    error: function () {
+                    	layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+        			}
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

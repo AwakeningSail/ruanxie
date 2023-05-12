@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.DocumentMapper">
+
+    <select id="getDocumentById" parameterType="int" resultType="com.Data.Document">
+        SELECT * FROM Document WHERE DocumentID = #{documentId};
+    </select>
+
+    <insert id="addDocument" parameterType="com.Data.Document">
+        INSERT INTO Document (DocumentID, address)
+        VALUES (#{documentID}, #{address});
+    </insert>
+
+    <update id="updateDocument" parameterType="com.Data.Document">
+        UPDATE Document
+        SET address = #{address}
+        WHERE DocumentID = #{documentID};
+    </update>
+
+    <delete id="deleteDocument" parameterType="int">
+        DELETE FROM Document WHERE DocumentID = #{documentId};
+    </delete>
+
+    <select id="getAllDocuments" resultType="com.Data.Document">
+        SELECT * FROM Document;
+    </select>
+
+</mapper>

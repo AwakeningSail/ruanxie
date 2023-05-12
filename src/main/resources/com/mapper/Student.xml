@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.StudentMapper">
+    <select id="getStudentById" parameterType="String" resultType="com.Data.Student">
+        SELECT * FROM Student WHERE StudentID = #{studentId}
+    </select>
+
+    <select id="getStudentByTelephone" parameterType="String" resultType="com.Data.Student">
+        SELECT * FROM Student WHERE Telephone = #{Telephone}
+    </select>
+
+    <select id="getStudentByEmail" parameterType="String" resultType="com.Data.Student">
+        SELECT * FROM Student WHERE Email = #{Email}
+    </select>
+
+    <insert id="addStudent" parameterType="com.Data.Student">
+        INSERT INTO Student(StudentID, Name, Password, TeamID, Telephone, Email)
+        VALUES(#{studentID}, #{name}, #{password}, #{teamID}, #{telephone}, #{email})
+    </insert>
+
+    <update id="updateStudent" parameterType="com.Data.Student">
+        UPDATE Student
+        SET Name = #{name}, Password = #{password}, TeamID = #{teamID}, Telephone = #{telephone}, Email = #{email}
+        WHERE StudentID = #{studentID}
+    </update>
+
+    <delete id="deleteStudent" parameterType="String">
+        DELETE FROM Student WHERE StudentID = #{studentId}
+    </delete>
+
+    <select id="getAllStudents" resultType="com.Data.Student">
+        SELECT * FROM Student
+    </select>
+</mapper>

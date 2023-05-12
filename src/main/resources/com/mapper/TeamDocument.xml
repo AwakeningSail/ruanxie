@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TeamDocumentMapper">
+
+    <select id="getTeamDocumentById" parameterType="map" resultType="com.Data.TeamDocument">
+        SELECT TeamDocumentID, DocumentID FROM TeamDocument WHERE TeamDocumentID = #{teamDocumentId} AND DocumentID = #{documentId}
+    </select>
+
+    <insert id="addTeamDocument" parameterType="com.Data.TeamDocument">
+        INSERT INTO TeamDocument (TeamDocumentID, DocumentID) VALUES (#{teamDocumentID}, #{documentID})
+    </insert>
+
+    <update id="updateTeamDocument" parameterType="com.Data.TeamDocument">
+        UPDATE TeamDocument SET TeamDocumentID = #{teamDocumentID}, DocumentID = #{documentID} WHERE TeamDocumentID = #{teamDocumentID} AND DocumentID = #{documentID}
+    </update>
+
+    <delete id="deleteTeamDocument" parameterType="map">
+        DELETE FROM TeamDocument WHERE TeamDocumentID = #{teamDocumentId} AND DocumentID = #{documentId}
+    </delete>
+
+    <select id="getAllTeamDocuments" resultType="com.Data.TeamDocument">
+        SELECT TeamDocumentID, DocumentID FROM TeamDocument
+    </select>
+
+    <select id="getTeamDocumentByTeamDocumentId" parameterType="int" resultType="com.Data.TeamDocument">
+        SELECT TeamDocumentID, DocumentID FROM TeamDocument WHERE TeamDocumentID = #{teamDocumentId}
+    </select>
+
+</mapper>
