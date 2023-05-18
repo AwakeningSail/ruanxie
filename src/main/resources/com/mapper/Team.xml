@@ -13,8 +13,8 @@
 
     <!-- 添加 Team -->
     <insert id="addTeam" parameterType="com.Data.Team">
-        INSERT INTO Team (TeamID, TeamSize, isBuild, BuildTime, Arrangement, TeamDocumentID, ReplyScore, notice)
-        VALUES (#{teamID}, #{teamSize}, #{isBuild}, #{buildTime}, #{arrangement}, #{teamDocumentID}, #{replyScore}, #{notice})
+        INSERT INTO Team (TeamID, TeamSize, isBuild, BuildTime, Arrangement, ReplyScore, notice)
+        VALUES (#{teamID}, #{teamSize}, #{isBuild}, #{buildTime}, #{arrangement}, #{replyScore}, #{notice})
     </insert>
 
     <!-- 更新 Team -->
@@ -24,7 +24,6 @@
                         isBuild = #{isBuild},
                         BuildTime = #{buildTime},
                         Arrangement = #{arrangement},
-                        TeamDocumentID = #{teamDocumentID},
                         ReplyScore = #{replyScore},
                         notice = #{notice}
         WHERE TeamID = #{teamID}

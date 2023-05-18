@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>团队列表</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
+</head>
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body demoTable">
+                    <div class="layui-form layui-col-space5">
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" id="demoReload" placeholder="请输入团队编号" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card-header">
+                    <button id="addTeam" class="layui-btn">
+                        <i class="layui-icon"></i>添加团队
+                    </button>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" id="test" lay-filter="test">
+                        <caption>团队列表</caption>
+                        <thead>
+                        <tr>
+                            <th lay-data="{field: 'Number', sort: true, align: 'center'}">团队编号</th>
+                            <th lay-data="{field: 'Member', align: 'center'}">人数情况</th>
+                            <th lay-data="{field: 'Operation', align: 'center', toolbar: '#barDemo'}">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 引入 JS 文件 -->
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+<script src="../js/xadmin.js"></script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="join">加入团队</a>
+</script>
+
+<script type="text/javascript">
+    layui.use(['table', 'layer', 'form', 'laydate'], function () {
+// 定义常量
+        const table = layui.table;
+        const layer = layui.layer;
+        const form = layui.form;
+
+// 渲染表格数据
+        let tableIns = table.render({
+            elem: '#test',
+            toolbar: true,
+            loading: true,
+            method: "post",
+            title: "成员列表",
+            url: 'http://localhost:8080/student/team/query',
+            cellMinWidth: 120,
+            contentType: 'application/json',
+            limit: 10, // 每页显示 10 条记录
+            limits: [10, 20, 50], // 每页显示的条数可选项
+            where: {
+                action: 'GetAll'
+            }, parseData: function (res) {
+
+                console.log(res);
+                return {
+                    "code": 0,
+                    "msg": "",
+                    "count": 1000,
+                    "data": res
+                }
+            },
+
+            cols: [
+                [{field: 'Number', title: '团队编号', sort: true, align: 'center'},
+                    {field: 'Member', title: '人数情况', align: 'center'},
+                    {field: 'Operation', title: '操作', align: 'center', toolbar: '#barDemo'}],
+            ],
+        });
+
+// 表格行工具条点击事件
+        table.on('tool(test)', function (obj) {
+            let data = obj.data;
+            let layEvent = obj.event;
+            if (layEvent === 'join') { //加入团队
+                joinTeam(data.Number)
+            }
+        });
+
+// 搜索按钮点击事件
+        $('.demoTable .layui-btn').on('click', function () {
+            const type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+// 添加新行事件
+        $('#addTeam').click(function () {
+            const data = {
+                action: 'Create',
+                number: $("#Number").val(),// 编号
+                name: $("#Member").val(),// 人数
+            };
+            $.ajax({
+                url: '/api/create-team',//TODO 创建团队申请
+                type: 'POST',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result.code == 0) { //成功
+                        layer.msg("添加团队成功", {icon: 1});
+                    } else { //失败
+                        layer.msg(result.msg, {icon: 5});
+                    }
+                }
+            })
+        });
+        //---------------表格搜索重载----------------
+        var $ = layui.$,
+            active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        url: '/api/create-team',//TODO
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            action: 'GetAll',
+                            number: $('#demoReload').val()
+                        }
+                    });
+                }
+            };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    function joinTeam(teamId) {
+        // 发送 AJAX 请求，将用户加入到指定的团队
+        $.ajax({
+            url: '/api/join-team',//TODO 加入团队
+            type: 'GET',
+            data: JSON.stringify({teamId: teamId}),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result) {
+                if (result.code === 0) { // 成功
+                    layer.msg('加入团队成功', {icon: 1});
+                    // TODO: 刷新表格数据等其他操作
+                } else { // 失败
+                    layer.msg(result.msg, {icon: 5});
+                }
+            },
+            error: function () {
+                layer.msg('服务器错误，请稍后再试', {icon: 5});
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

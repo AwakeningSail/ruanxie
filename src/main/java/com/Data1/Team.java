@@ -1,106 +1,122 @@
 package com.Data1;
 
+import java.io.IOException;
 import java.sql.Time;
+
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import org.springframework.util.StringUtils;
 
 import javax.xml.crypto.Data;
 
 public class Team {
-        private int teamID;
-        private int teamSize;
-        private boolean isBuild;
-        private Time buildTime;
-        private Arrangement arrangement; // 添加 JSONObject 类型的属性
-        private int teamDocumentID;
-        private String replyScore;
-        private String notice;
+    private int teamID;
+    private int teamSize;
+    private boolean isBuild;
+    private Time buildTime;
+    private Arrangement arrangement; // 添加 JSONObject 类型的属性
+    private String replyScore;
+    private String notice;
 
-        // 构造方法
-        public Team(int teamID, int teamSize, boolean isBuild, Time buildTime, String arrangement,
-                    int teamDocumentID, String replyScore, String notice) {
-                this.teamID = teamID;
-                this.teamSize = teamSize;
-                this.isBuild = isBuild;
-                this.buildTime = buildTime;
-                this.arrangement = new Arrangement(arrangement); // 将字符串解析为 JSONObject 对象
-                this.teamDocumentID = teamDocumentID;
-                this.replyScore = replyScore;
-                this.notice = notice;
-        }
-        public Team(com.Data.Team team){
-                this.teamID = team.getTeamID();
-                this.teamSize = team.getTeamSize();
-                this.isBuild = team.isBuild();
-                this.buildTime = team.getBuildTime();
-                this.arrangement = new Arrangement(team.getArrangement()); // 将字符串解析为 JSONObject 对象
-                this.teamDocumentID = team.getTeamDocumentID();
-                this.replyScore = team.getReplyScore();
-                this.notice = team.getNotice();
-        }
+    // 构造方法
+    public Team(int teamID, int teamSize, boolean isBuild, Time buildTime, String arrangement,
+                int teamDocumentID, String replyScore, String notice) throws IOException {
+        this.teamID = teamID;
+        this.teamSize = teamSize;
+        this.isBuild = isBuild;
+        this.buildTime = buildTime;
+        this.arrangement = new Arrangement(arrangement); // 将字符串解析为 JSONObject 对象
+        this.replyScore = replyScore;
+        this.notice = notice;
+    }
 
+    public Team(com.Data.Team team) {
+        this.teamID = team.getTeamID();
+        this.teamSize = team.getTeamSize();
+        this.isBuild = team.isBuild();
+        this.buildTime = team.getBuildTime();
+        this.arrangement = new Arrangement(team.getArrangement()); // 将字符串解析为 JSONObject 对象
+        this.replyScore = team.getReplyScore();
+        this.notice = team.getNotice();
+    }
 
-        // getters and setters
-        public int getTeamID() {
-                return teamID;
-        }
+    public String toJSONString() {
+        JsonFactory jsonFactory=new JsonFactory();
+        String x=jsonFactory.toJsonString(this);
+        return x;
+    }
 
-        public void setTeamID(int teamID) {
-                this.teamID = teamID;
-        }
+    public Team() {
 
-        public int getTeamSize() {
-                return teamSize;
-        }
+    }
 
-        public void setTeamSize(int teamSize) {
-                this.teamSize = teamSize;
-        }
+    public void setArrangement(Arrangement arrangement) {
+        this.arrangement = arrangement;
+    }
 
-        public boolean isBuild() {
-                return isBuild;
-        }
+    // getters and setters
+    public int getTeamID() {
+        return teamID;
+    }
 
-        public void setBuild(boolean build) {
-                isBuild = build;
-        }
+    public void setTeamID(int teamID) {
+        this.teamID = teamID;
+    }
 
-        public Time getBuildTime() {
-                return buildTime;
-        }
+    public int getTeamSize() {
+        return teamSize;
+    }
 
-        public void setBuildTime(Time buildTime) {
-                this.buildTime = buildTime;
-        }
+    public void setTeamSize(int teamSize) {
+        this.teamSize = teamSize;
+    }
 
-        public String getArrangement() {
-                return arrangement.toJSONString();
-        }
+    public boolean isBuild() {
+        return isBuild;
+    }
 
-        public void setArrangement(String arrangement) {
-                this.arrangement = new Arrangement(arrangement);
-        }
+    public void setBuild(boolean build) {
+        isBuild = build;
+    }
 
-        public int getTeamDocumentID() {
-                return teamDocumentID;
-        }
+    public Time getBuildTime() {
+        return buildTime;
+    }
 
-        public void setTeamDocumentID(int teamDocumentID) {
-                this.teamDocumentID = teamDocumentID;
-        }
+    public void setBuildTime(Time buildTime) {
+        this.buildTime = buildTime;
+    }
 
-        public String getReplyScore() {
-                return replyScore;
-        }
+    public Arrangement getArrangement() {
+        return arrangement;
+    }
 
-        public void setReplyScore(String replyScore) {
-                this.replyScore = replyScore;
-        }
+    public String getReplyScore() {
+        return replyScore;
+    }
 
-        public String getNotice() {
-                return notice;
-        }
+    public void setReplyScore(String replyScore) {
+        this.replyScore = replyScore;
+    }
 
-        public void setNotice(String notice) {
-                this.notice = notice;
-        }
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "teamID=" + teamID +
+                ", teamSize=" + teamSize +
+                ", isBuild=" + isBuild +
+                ", buildTime=" + buildTime +
+                ", arrangement=" + arrangement +
+                ", replyScore='" + replyScore + '\'' +
+                ", notice='" + notice + '\'' +
+                '}';
+    }
 }

@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class StudentLogin {
+public class StudentService {
 
     @Autowired(required=false)
     private StudentMapper studentMapper;
-    public StudentLogin() throws IOException {
+    public StudentService() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -23,8 +23,17 @@ public class StudentLogin {
         studentMapper=sqlSession.getMapper(com.mapper.StudentMapper.class);
     }
 
+   public Student Find(String ID){
+        Student student=studentMapper.getStudentByEmail(ID);
+        if(student!=null)return student;
+        student=studentMapper.getStudentById(ID);
+        if(student!=null)return student;
+        student=studentMapper.getStudentByTelephone(ID);
+        if(student!=null)return student;
+        return null;
+    }
     public Student Login(String ID, String Password){
-        Student student=check(ID);
+        Student student= Find(ID);
         if(student==null){
             return null;
         }
@@ -34,14 +43,4 @@ public class StudentLogin {
             return null;
         }
     }
-    Student check(String ID){
-        Student student=studentMapper.getStudentByEmail(ID);
-        if(student!=null)return student;
-        student=studentMapper.getStudentById(ID);
-        if(student!=null)return student;
-        student=studentMapper.getStudentByTelephone(ID);
-        if(student!=null)return student;
-        return null;
-    }
-
 }

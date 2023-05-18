@@ -1,33 +1,56 @@
 package com.Data1;
 
+import com.Data.Student;
 import com.alibaba.fastjson.JSONObject;
+import com.service.StudentService;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class Arrangement {
-    private String leader;
-    private String productManager;
-    private String planQualityManager;
-    private String testManager;
-    private String devManager;
-    Arrangement(){}
+    private Student leader;
+    private Student productManager;
+    private Student planQualityManager;
+    private Student testManager;
+    private Student devManager;
+    public Arrangement(){
+        this.leader=null;
+        this.productManager =null ;
+        this.planQualityManager =null ;
+        this.testManager =null ;
+        this.devManager =null ;
+    }
     public Arrangement(String json) {
+        System.out.println(json);
         JSONObject jsonObj = JSONObject.parseObject(json);
-        this.leader = jsonObj.getString("leader");
-        this.productManager = jsonObj.getString("productManager");
-        this.planQualityManager = jsonObj.getString("planQualityManager");
-        this.testManager = jsonObj.getString("testManager");
-        this.devManager = jsonObj.getString("devManager");
+        if(jsonObj.getString("leader")!=null)this.leader = new Student(jsonObj.getString("leader"));
+        if(jsonObj.getString("productManager")!=null)this.productManager =new Student(jsonObj.getString("productManager")) ;
+        if(jsonObj.getString("planQualityManager")!=null)this.planQualityManager =new Student(jsonObj.getString("planQualityManager")) ;
+        if(jsonObj.getString("testManager")!=null)this.testManager =new Student(jsonObj.getString("testManager")) ;
+        if(jsonObj.getString("devManager")!=null)this.devManager=new Student(jsonObj.getString("devManager"));
     }
     public String toJSONString() {
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("leader", this.leader);
-        jsonObj.put("productManager", this.productManager);
-        jsonObj.put("planQualityManager", this.planQualityManager);
-        jsonObj.put("testManager", this.testManager);
-        jsonObj.put("devManager", this.devManager);
+
+        if(this.productManager!=null)jsonObj.put("productManager", this.productManager);
+        if(this.planQualityManager!=null)jsonObj.put("planQualityManager", this.planQualityManager);
+        if(this.testManager!=null)jsonObj.put("testManager", this.testManager);
+        if(this.devManager!=null)jsonObj.put("devManager", this.devManager);
         return jsonObj.toJSONString();
     }
+
+    @Override
+    public String toString() {
+        return "Arrangement{" +
+                "leader=" + leader +
+                ", productManager=" + productManager +
+                ", planQualityManager=" + planQualityManager +
+                ", testManager=" + testManager +
+                ", devManager=" + devManager +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,51 +64,76 @@ public class Arrangement {
         return Objects.hash(leader, productManager, planQualityManager, testManager, devManager);
     }
 
-    public String getLeader() {
+    public Student getLeader() {
         return leader;
     }
 
-    public void setLeader(String leader) {
+    public void setLeader(Student leader) {
         this.leader = leader;
     }
 
-    public String getProductManager() {
+    public Student getProductManager() {
         return productManager;
     }
 
-    public void setProductManager(String productManager) {
+    public void setProductManager(Student productManager) {
         this.productManager = productManager;
     }
 
-    public String getPlanQualityManager() {
+    public Student getPlanQualityManager() {
         return planQualityManager;
     }
 
-    public void setPlanQualityManager(String planQualityManager) {
+    public void setPlanQualityManager(Student planQualityManager) {
         this.planQualityManager = planQualityManager;
     }
 
-    public String getTestManager() {
+    public Student getTestManager() {
         return testManager;
     }
 
-    public void setTestManager(String testManager) {
+    public void setTestManager(Student testManager) {
         this.testManager = testManager;
     }
 
-    public String getDevManager() {
+    public Student getDevManager() {
         return devManager;
     }
 
-    public void setDevManager(String devManager) {
+    public void setDevManager(Student devManager) {
         this.devManager = devManager;
     }
 
-    public Arrangement(String leader, String productManager, String planQualityManager, String testManager, String devManager) {
+    public Arrangement(Student leader, Student productManager, Student planQualityManager, Student testManager, Student devManager) {
         this.leader = leader;
         this.productManager = productManager;
         this.planQualityManager = planQualityManager;
         this.testManager = testManager;
         this.devManager = devManager;
     }
+    public void setLeader(String leaderID) throws IOException {
+        StudentService studentService = new StudentService();
+        this.leader = studentService.Find(leaderID);
+    }
+
+    public void setProductManager(String productManagerID) throws IOException {
+        StudentService studentService = new StudentService();
+        this.productManager = studentService.Find(productManagerID);
+    }
+
+    public void setPlanQualityManager(String planQualityManagerID) throws IOException {
+        StudentService studentService = new StudentService();
+        this.planQualityManager = studentService.Find(planQualityManagerID);
+    }
+
+    public void setTestManager(String testManagerID) throws IOException {
+        StudentService studentService = new StudentService();
+        this.testManager = studentService.Find(testManagerID);
+    }
+
+    public void setDevManager(String devManagerID) throws IOException {
+        StudentService studentService = new StudentService();
+        this.devManager = studentService.Find(devManagerID);
+    }
+
 }

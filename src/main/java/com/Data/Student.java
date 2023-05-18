@@ -1,5 +1,8 @@
 package com.Data;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+
 import java.util.Objects;
 
 public class Student {
@@ -24,6 +27,26 @@ public class Student {
                 ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+    public String toJSONString() {
+
+        JSONObject object =new JSONObject();
+        object.put("studentID",studentID);
+        object.put("name",name);
+        object.put("password",password);
+        object.put("teamID",teamID);
+        object.put("telephone",telephone);
+        object.put("email",email);
+        return object.toJSONString();
+    }
+    public Student(String JSONString){
+        JSONObject jsonObject=JSONObject.parseObject(JSONString);
+        this.studentID = jsonObject.getString("studentID");
+        this.name = jsonObject.getString("name");
+        this.password = jsonObject.getString("password");
+        this.teamID = (int) jsonObject.get("teamID");
+        this.telephone = jsonObject.getString("telephone");
+        this.email = jsonObject.getString("email");
     }
 
     @Override

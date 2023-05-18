@@ -5,13 +5,13 @@ import com.Data.Document;
 import java.util.List;
 
 public interface DocumentMapper {
-    Document getDocumentById(int documentId);
+    Document getDocumentById(int TeamID);
 
     void addDocument(Document document);
 
     void updateDocument(Document document);
 
-    void deleteDocument(int documentId);
+    void deleteDocument(int TeamID);
 
     List<Document> getAllDocuments();
 }

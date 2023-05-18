@@ -1,5 +1,8 @@
 package com.Data;
 
+import com.Data1.Arrangement;
+import com.Data1.JsonFactory;
+
 import java.sql.Time;
 import java.util.Objects;
 
@@ -9,9 +12,22 @@ public class Team {
     private boolean isBuild;
     private Time buildTime;
     private String arrangement;
-    private int teamDocumentID;
     private String replyScore;
     private String notice;
+
+    public Team() {
+
+    }
+
+    public Team(com.Data1.Team team) {
+        this.teamID = team.getTeamID();
+        this.teamSize = team.getTeamSize();
+        this.isBuild = team.isBuild();
+        this.buildTime = team.getBuildTime();
+        this.arrangement = team.getArrangement().toJSONString();
+        this.replyScore = team.getReplyScore();
+        this.notice = team.getNotice();
+    }
 
     @Override
     public String toString() {
@@ -21,7 +37,6 @@ public class Team {
                 ", isBuild=" + isBuild +
                 ", buildTime=" + buildTime +
                 ", arrangement='" + arrangement + '\'' +
-                ", teamDocumentID=" + teamDocumentID +
                 ", replyScore='" + replyScore + '\'' +
                 ", notice='" + notice + '\'' +
                 '}';
@@ -32,12 +47,12 @@ public class Team {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return teamID == team.teamID && teamSize == team.teamSize && isBuild == team.isBuild && teamDocumentID == team.teamDocumentID && Objects.equals(buildTime, team.buildTime) && Objects.equals(arrangement, team.arrangement) && Objects.equals(replyScore, team.replyScore) && Objects.equals(notice, team.notice);
+        return teamID == team.teamID && teamSize == team.teamSize && isBuild == team.isBuild && Objects.equals(buildTime, team.buildTime) && Objects.equals(arrangement, team.arrangement) && Objects.equals(replyScore, team.replyScore) && Objects.equals(notice, team.notice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teamID, teamSize, isBuild, buildTime, arrangement, teamDocumentID, replyScore, notice);
+        return Objects.hash(teamID, teamSize, isBuild, buildTime, arrangement, replyScore, notice);
     }
 
     public int getTeamID() {
@@ -80,13 +95,6 @@ public class Team {
         this.arrangement = arrangement;
     }
 
-    public int getTeamDocumentID() {
-        return teamDocumentID;
-    }
-
-    public void setTeamDocumentID(int teamDocumentID) {
-        this.teamDocumentID = teamDocumentID;
-    }
 
     public String getReplyScore() {
         return replyScore;
@@ -110,7 +118,6 @@ public class Team {
         this.isBuild = isBuild;
         this.buildTime = buildTime;
         this.arrangement = arrangement;
-        this.teamDocumentID = teamDocumentID;
         this.replyScore = replyScore;
         this.notice = notice;
     }

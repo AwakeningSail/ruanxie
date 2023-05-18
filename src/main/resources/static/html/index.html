@@ -13,71 +13,88 @@
 
 <body class="login-bg">
 
-  <div class="login layui-anim layui-anim-up">
-    <div class="message">图书管理系统登录</div>
-    <div id="darkbannerwrap"></div>
+<div class="login layui-anim layui-anim-up">
+  <div class="message">图书管理系统登录</div>
+  <div id="darkbannerwrap"></div>
 
-    <form method="post" class="layui-form">
-      <input name="number" id="number" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
-      <hr class="hr15">
-      <input name="password" id="password" placeholder="密码" type="password" lay-verify="required" class="layui-input">
-      <hr class="hr15">
-      <div class="layui-form-item">
-        <label class="layui-form-label">登录类型:</label>
-        <div class="layui-input-block">
-          <input type="radio" name="type" value="0" title="管理员">
-          <input type="radio" name="type" value="1" title="会员" checked>
-        </div>
+  <form method="post" class="layui-form">
+    <input name="number" id="number" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+    <hr class="hr15">
+    <input name="password" id="password" placeholder="密码" type="password" lay-verify="required" class="layui-input">
+    <hr class="hr15">
+    <div class="layui-form-item">
+      <label class="layui-form-label">登录类型:</label>
+      <div class="layui-input-block">
+        <input type="radio" name="type" value="0" title="管理员">
+        <input type="radio" name="type" value="1" title="会员" checked>
       </div>
-      <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-      <hr class="hr20">
-    </form>
-    <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" onClick="javascript:window.location.href='register.html';">
-  </div>
+    </div>
+    <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+    <hr class="hr20">
+  </form>
+  <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" onClick="javascript:window.location.href='register.html';">
+</div>
 
-  <script>
-    $(function () {
-      layui.use('form', function () {
-        var form = layui.form;
-        form.render();
-        form.on('submit(login)', function (data) {
+<script>
+  $(function () {
+    layui.use('form', function () {
+      var form = layui.form;
+      form.render();
+      form.on('submit(login)', function (data) {
+        if ($('input:radio:checked').val() == 1) {
           $.ajax({
-            url: 'http://localhost:8080/user/toLogin',
+            url: 'http://localhost:8080/student/login',
             type: 'post',
-            // Todo: 修改data内容
+            dataType: "json",
+            data: JSON.stringify({
+              id: $("#number").val(),
+              password: $("#password").val()
+            }),
+            contentType: 'application/json',
+            success: function (response) {
+              console.log(response);
+              if(response.status==1){
+                layer.msg(response.object, { icon: 5 });
+                location.href = 'html/BookInfos.html';
+              }else{
+                layer.msg(response.object, { icon: 5 });
+              }
+            },
+            error: function (response) {
+
+              console.log(response);
+              layer.msg(response.responseText, { icon: 5 });
+            }
+          });
+        } else {
+          $.ajax({
+            url: 'http://localhost:8080/teacher/login',
+            type: 'post',
             data: {
-              //action: 'Login',
               number: $("#number").val(),
               password: $("#password").val()
-              //typeId: $('input:radio:checked').val()
             },
-            dataType: 'json',
+            crossDomain: true,
             success: function (result) {
-              result = JSON.stringify(result);
-              result = $.parseJSON(result);
-              if (result.result == 0) { //登录成功
-                console.log(result);
-                if ($('input:radio:checked').val() == 0) {
-                  location.href = 'main_manager.html';
-                  window.localStorage.setItem('user', result.data.Name);
-                } else {
-                  location.href = 'main_customer.html';
-                  window.localStorage.setItem('user', result.data.Name);
-                }
-
-              } else if (result.result == -1) {
-                layer.msg("账号或密码错误,请重试", { icon: 5 });
+              a=$.parseJSON(result.responseText);
+              console.log(a);
+              if(a.status==1){
+                layer.msg(a.object, { icon: 5 });
+                location.href = 'html/BookInfos.html';
+              }else{
+                layer.msg(a.object, { icon: 5 });
               }
             },
             error: function () {
-            	layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
-			}
+              layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+            }
           });
-          return false;
-        });
-      });
-    })
-  </script>
-</body>
+        }
 
+        return false;
+      });
+    });
+  })
+</script>
+</body>
 </html>

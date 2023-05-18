@@ -1,45 +1,36 @@
 package com;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig {
-
-    /**
-     * 创建API
-     */
+ 
     @Bean
-    public Docket createRestApi() {
+    public Docket createRestAPI() {
         return new Docket(DocumentationType.SWAGGER_2)
-                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
                 .apiInfo(apiInfo())
-                // 设置哪些接口暴露给Swagger展示
                 .select()
-                // 扫描所有有注解的api，用这种方式更灵活
-        .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                // 扫描所有 .apis(RequestHandlerSelectors.any())
+                // 改为自己的controller包路径
+                .apis(RequestHandlerSelectors.basePackage("com.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
-
-    /**
-     * 添加摘要信息
-     */
-    private ApiInfo apiInfo()
-    {
-        // 用ApiInfoBuilder进行定制
+ 
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                // 设置标题
-                .title("数据库作业")
-                .description("swagger的API文档")
+                .title("WebNovel接口文档")
+                .description("WebNovel Restful 接口")
+                .contact(new Contact("xxUser", "#", "xxUser@.qq.com"))
                 .version("1.0")
                 .build();
     }
