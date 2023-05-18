@@ -2,6 +2,7 @@ package com.service;
 
 import com.Data.Team;
 import com.Data.Teamwork;
+import com.Data1.AssignmentResults;
 import com.Data1.WorkArrangement;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class TeamWorkService {
     private StudentMapper studentMapper;
     SqlSession sqlSession ;
     TeamService teamService;
+    DocumentService documentService;
     String[] status= new String[20];
 
 
@@ -51,14 +54,19 @@ public class TeamWorkService {
         studentMapper=sqlSession.getMapper(com.mapper.StudentMapper.class);
         teamworkMapper=sqlSession.getMapper(com.mapper.TeamworkMapper.class);
         teamService=new TeamService();
+        documentService=new DocumentService();
         status[0]="发布成功";
         status[1]="存在不属于团队的学生ID";
+        status[2]="修改成功";
+        status[3]="文件不存在";
     }
 
     public List<com.Data1.Teamwork>queryAllTeamWork(int TeamID){
+
         List<Teamwork> teamworks=teamworkMapper.getTeamworkById(TeamID);
         List<com.Data1.Teamwork>teamworks1=new ArrayList<>();
         for(Teamwork teamwork:teamworks){
+            System.out.println(new com.Data1.Teamwork(teamwork));
             teamworks1.add(new com.Data1.Teamwork(teamwork));
         }
         return teamworks1;
@@ -96,5 +104,31 @@ public class TeamWorkService {
             ans=Math.max(ans,teamwork.getTeamworkid());
         }
         return ans+1;
+    }
+
+    public int updateTeamWorkAssignment(int TeamID,String studentID,int TeamworkID,int DocumentID){
+        if(!documentService.check(DocumentID)){
+            return 3;
+        }
+        Teamwork teamwork = teamworkMapper.getTeamworkByTeamworkID(TeamworkID);
+        com.Data1.Teamwork teamwork1=new com.Data1.Teamwork(teamwork);
+        Map<String,Integer> map=teamwork1.getAssignmentResults().getAssignmentresults();
+        if(map==null)map=new HashMap<>();
+        map.put(studentID,DocumentID);
+        teamwork1.setAssignmentResults(new AssignmentResults(map));
+        teamwork=new Teamwork(teamwork1);
+        teamworkMapper.updateTeamwork(teamwork);
+        sqlSession.commit();
+        return 2;
+    }
+    public int updateTeamWorkMeetingMinutes(int TeamID,String studentID,int TeamworkID,int DocumentID){
+        if(!documentService.check(DocumentID)){
+            return 3;
+        }
+        Teamwork teamwork = teamworkMapper.getTeamworkByTeamworkID(TeamworkID);
+        teamwork.setMeetingMinutes(DocumentID);
+        teamworkMapper.updateTeamwork(teamwork);
+        sqlSession.commit();
+        return 2;
     }
 }

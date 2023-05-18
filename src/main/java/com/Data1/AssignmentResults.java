@@ -13,6 +13,7 @@ public class AssignmentResults {
         this.assignmentresults = assignmentresults;
     }
     public AssignmentResults(String assignmentresult){
+        System.out.println((Map)JSON.parse(assignmentresult));
         this.assignmentresults=(Map)JSON.parse(assignmentresult);
     }
 

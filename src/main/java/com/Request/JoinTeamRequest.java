@@ -5,7 +5,6 @@ import java.util.Objects;
 public class JoinTeamRequest {
     int TeamID;
 
-
     public int getTeamID() {
         return TeamID;
     }

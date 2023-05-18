@@ -31,4 +31,13 @@ public class Maplog {
 
         System.out.println("----------------------------------------------");
     }
+    public static void setMap(String key, int val){
+        map.put(key,String.valueOf(val));
+        System.out.println("----------------------------------------------");
+        System.out.println("ID="+FindID()+'\n'+
+                "userType="+FinduserType()+'\n'+
+                "TeamID=" +FindTeamID()       );
+
+        System.out.println("----------------------------------------------");
+    }
 }

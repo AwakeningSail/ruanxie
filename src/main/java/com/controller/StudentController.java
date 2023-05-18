@@ -6,6 +6,7 @@ import com.Request.LoginRequest;
 import com.Request.objectRequest;
 import com.RuanxieApplication;
 import com.service.StudentService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class StudentController  {
     Student studentlog;
     @ApiOperation(value = "所有人", notes = "学生登录")
     @PostMapping("/student/login")
+    @ApiImplicitParam
     public ResponseEntity<String> login(@ApiParam(value = "学生ID或者学生Email或者学生电话以及密码", required = true) @RequestBody() LoginRequest request
             , HttpServletResponse response) throws IOException {
         StudentService studentService = new StudentService();
@@ -38,6 +40,7 @@ public class StudentController  {
             // 登录成功
             RuanxieApplication.maplog.setMap("ID",student.getStudentID());
             RuanxieApplication.maplog.setMap("userType","student");
+            if(student.getTeamID()!=-1)RuanxieApplication.maplog.setMap("TeamID",student.getTeamID());
             return ResponseEntity.ok(jsonFactory.toJsonString(new objectRequest("1","登录成功")));
         } else {
             // 登录失败

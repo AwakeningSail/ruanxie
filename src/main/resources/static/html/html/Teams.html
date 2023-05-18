@@ -146,17 +146,16 @@
       var data = obj.data;
       var layEvent = obj.event;
       if (layEvent === 'join') { // 加入团队
+        var d={
+          teamID:data.teamID
+        };
         layer.confirm('确定要加入编号为：' + data.teamID + ' 的团队吗？', function (index) {
           $.ajax({
             url: 'http://localhost:8080/student/team/join',
             type: 'post',
             dataType: 'json',
+            data:JSON.stringify(d),
             contentType: 'application/json',
-            data: JSON.stringify({
-              Team_ID: data.Team_ID,
-              Member: data.Member,
-              isbuild: data.isbuild,
-            }),
             crossDomain: true,
             success: function (result) {
               if (result.status == 0) {
@@ -173,33 +172,18 @@
     });
     // 添加新团队事件
     $('#addTeam').click(function () {
-      var data = {
-        Team_ID: $("#Team_ID").val(),// 编号
-        Member: $("#Member").val(),// 人数
-        isbuild: $("#isbuild").val(),//建立情况
-      };
       $.ajax({//开始异步
-        url: 'http://localhost:8080/team',
+        url: 'http://localhost:8080/student/team/add',
         type: 'post',
-        data: data,
         dataType: 'json',
         contentType:'application.json',
         success: function (result) {
-          if (result.code == 0) {
+          if (result.status == 0) {
             // 构造一条记录对象
-            var newRow = {
-              Team_ID: data.Team_ID,
-              Member: data.Member,
-              isbuild: data.isbuild,
-              Operation: '<a class="layui-btn layui-btn-xs" lay-event="join">加入团队</a>',
-            };
             // 获取表格实例，并添加新行数据
-            layui.table.reload('testReload', {
-              data: [newRow].concat(layui.table.cache['testReload'])
-            });
-            layer.msg("添加团队成功", {icon: 1});
+            layer.msg(result.object, {icon: 1});
           } else {
-            layer.msg("添加团队失败！", { icon: 5 });
+            layer.msg(result.object, { icon: 5 });
           }
         }
       })

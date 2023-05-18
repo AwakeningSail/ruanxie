@@ -2,6 +2,8 @@ package com.Data1;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Map;
+
 public class Teamwork {
     private int teamID;
     private WorkArrangement workArrangement; // 添加 JSONObject 类型的属性
@@ -100,3 +102,21 @@ public class Teamwork {
                 '}';
     }
 }
+/*
+[
+  {
+    "teamID": 1,
+    "workArrangement": {
+      "workArrangemnet": {
+        "1": "1"
+      }
+    },
+    "meetingMinutes": 0,
+    "assignmentResults": {
+      "assignmentresults": null
+    },
+    "score": 0,
+    "teamworkid": 1
+  }
+]
+*/

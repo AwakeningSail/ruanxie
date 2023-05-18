@@ -7,11 +7,11 @@ import java.util.Objects;
 
 public class Teamwork {
     private int teamID;
-    private String workArrangement;//文件形式安排
+    private int teamworkid;
+    private String workArrangement;
     private int meetingMinutes;
     private String assignmentResults;
     private int score;
-    private int teamworkid;
 
     public int getTeamworkid() {
         return teamworkid;
@@ -21,18 +21,6 @@ public class Teamwork {
         this.teamworkid = teamworkid;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Teamwork teamwork = (Teamwork) o;
-        return teamID == teamwork.teamID && meetingMinutes == teamwork.meetingMinutes && score == teamwork.score && Objects.equals(workArrangement, teamwork.workArrangement) && Objects.equals(assignmentResults, teamwork.assignmentResults);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(teamID, workArrangement, meetingMinutes, assignmentResults, score);
-    }
 
     public int getTeamID() {
         return teamID;
@@ -74,22 +62,15 @@ public class Teamwork {
         this.score = score;
     }
 
-    public Teamwork(int teamID, String workArrangement, int meetingMinutes, String assignmentResults, int score, int teamworkid) {
+    public Teamwork(int teamID, int teamworkid, String workArrangement, int meetingMinutes, String assignmentResults, int score) {
         this.teamID = teamID;
+        this.teamworkid = teamworkid;
         this.workArrangement = workArrangement;
         this.meetingMinutes = meetingMinutes;
         this.assignmentResults = assignmentResults;
         this.score = score;
-        this.teamworkid = teamworkid;
     }
 
-    public Teamwork(int teamID, String workArrangement, int meetingMinutes, String assignmentResults, int score) {
-        this.teamID = teamID;
-        this.workArrangement = workArrangement;
-        this.meetingMinutes = meetingMinutes;
-        this.assignmentResults = assignmentResults;
-        this.score = score;
-    }
     public void setAssignmentResults(com.Data1.AssignmentResults assignmentResults){
         this.assignmentResults=JSONObject.toJSONString(assignmentResults);
     }
@@ -97,11 +78,11 @@ public class Teamwork {
         this.workArrangement = JSONObject.toJSONString(workArrangement);
     }
     public Teamwork(com.Data1.Teamwork teamwork){
-        this.assignmentResults=JSONObject.toJSONString(teamwork.getAssignmentResults());
+        if(teamwork.getAssignmentResults()!=null)this.assignmentResults=JSONObject.toJSONString(teamwork.getAssignmentResults().getAssignmentresults());
         this.meetingMinutes=teamwork.getMeetingMinutes();
         this.score=teamwork.getScore();
         this.teamID=teamwork.getTeamID();
-        this.workArrangement=JSONObject.toJSONString(teamwork.getWorkArrangement());
+        if(teamwork.getWorkArrangement()!=null)this.workArrangement=JSONObject.toJSONString(teamwork.getWorkArrangement().getWorkArrangemnet());
         this.teamworkid=teamwork.getTeamworkid();
     }
 
@@ -117,5 +98,17 @@ public class Teamwork {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teamwork teamwork = (Teamwork) o;
+        return teamID == teamwork.teamID && meetingMinutes == teamwork.meetingMinutes && score == teamwork.score && teamworkid == teamwork.teamworkid && Objects.equals(workArrangement, teamwork.workArrangement) && Objects.equals(assignmentResults, teamwork.assignmentResults);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamID, workArrangement, meetingMinutes, assignmentResults, score, teamworkid);
+    }
 // getters and setters
 }

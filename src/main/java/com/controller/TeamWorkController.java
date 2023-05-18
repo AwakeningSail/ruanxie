@@ -5,6 +5,7 @@ import com.Data1.Arrangement;
 import com.Data1.JsonFactory;
 import com.Data1.Teamwork;
 import com.Request.AddTeamWorkArrangementRequest;
+import com.Request.addTeamWorkAssignmentRequest;
 import com.Request.objectRequest;
 import com.RuanxieApplication;
 import com.alibaba.fastjson.JSON;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @EnableSwagger2
+@CrossOrigin
 @RequestMapping("/student/teamwork")
 public class TeamWorkController {
     StudentService studentService;
@@ -48,5 +50,22 @@ public class TeamWorkController {
         return ResponseEntity.ok(jsonFactory.toJsonString(new objectRequest(String.valueOf(op),teamWorkService.getStatus(op))));
 
     }
+    @ApiOperation(value = "学生", notes = "提交任务")
+    @PostMapping("/teamWorkassignment/update")
+    public ResponseEntity<String> updateTeamWorkAssignment(@ApiParam("给出对应学生文件缓存区的文件id")@RequestBody addTeamWorkAssignmentRequest request) throws IOException, NoSuchFieldException, IllegalAccessException {
 
+        teamWorkService = new TeamWorkService();
+        int status=teamWorkService.updateTeamWorkAssignment(RuanxieApplication.maplog.FindTeamID(),RuanxieApplication.maplog.FindID(),
+                request.getTeamWorkID(),request.getDocumentID());
+        return ResponseEntity.ok(JSON.toJSONString(new objectRequest(status,teamWorkService.getStatus(status))));
+    }
+    @ApiOperation(value = "学生", notes = "提交会议文件")
+    @PostMapping("/teamWorkmeetingMinutes/update")
+    public ResponseEntity<String> updateTeamWorkMeetingMinutes(@ApiParam("给出对应学生文件缓存区的文件id")@RequestBody addTeamWorkAssignmentRequest request) throws IOException, NoSuchFieldException, IllegalAccessException {
+
+        teamWorkService = new TeamWorkService();
+        int status=teamWorkService.updateTeamWorkMeetingMinutes(RuanxieApplication.maplog.FindTeamID(),RuanxieApplication.maplog.FindID(),
+                request.getTeamWorkID(),request.getDocumentID());
+        return ResponseEntity.ok(JSON.toJSONString(new objectRequest(status,teamWorkService.getStatus(status))));
+    }
 }

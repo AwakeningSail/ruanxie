@@ -40,14 +40,15 @@ public class TeamController {
         System.out.println("studentId" + studentId);
         studentService = new StudentService();
         teamService = new TeamService();
+        jsonFactory=new JsonFactory();
         Student student = studentService.Find(studentId);
         System.out.println(student);
         if (student.getTeamID() != -1) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("当前学生已经加入了团队，无法创建新团队");
+            return ResponseEntity.ok(jsonFactory.toJsonString(new objectRequest(1,"你已加入团队")));
         }
         com.Data1.Team team = teamService.TeamBuild(student);
         // 获取当前所有团队ID的最大值
-        return ResponseEntity.status(HttpStatus.OK).body(jsonFactory.toJsonString(team));
+        return ResponseEntity.ok(jsonFactory.toJsonString(new objectRequest(0,"创建团队成功")));
     }
 
     @ApiOperation(value = "学生", notes = "获取所有团队信息")
