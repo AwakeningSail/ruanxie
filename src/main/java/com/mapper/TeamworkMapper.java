@@ -5,7 +5,7 @@ import com.Data.Teamwork;
 import java.util.List;
 
 public interface TeamworkMapper {
-    Teamwork getTeamworkById(int teamId);
+    List<Teamwork> getTeamworkById(int teamId);
 
     void addTeamwork(Teamwork teamwork);
 
@@ -14,4 +14,6 @@ public interface TeamworkMapper {
     void deleteTeamwork(int teamId);
 
     List<Teamwork> getAllTeamworks();
+
+    Teamwork getTeamworkByTeamworkID(int TeamworkID);
 }

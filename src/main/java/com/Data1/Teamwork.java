@@ -8,24 +8,12 @@ public class Teamwork {
     private int meetingMinutes;
     private AssignmentResults assignmentResults; // 添加 JSONObject 类型的属性
     private int score;
+    private int teamworkid;
 
-    // 构造方法
-    public Teamwork(int teamID, String workArrangement, int meetingMinutes,
-                    String assignmentResults, int score) {
-        this.teamID = teamID;
-        this.workArrangement = new WorkArrangement(workArrangement); // 将字符串解析为 JSONObject 对象
-        this.meetingMinutes = meetingMinutes;
-        this.assignmentResults = new AssignmentResults(assignmentResults); // 将字符串解析为 JSONObject 对象
-        this.score = score;
+    public Teamwork() {
+
     }
-    public Teamwork(com.Data.Teamwork teamwork) {
-        this.teamID = teamwork.getTeamID();
-        this.workArrangement = new WorkArrangement(teamwork.getWorkArrangement()); // 将字符串解析为 JSONObject 对象
-        this.meetingMinutes = teamwork.getMeetingMinutes();
-        this.assignmentResults = new AssignmentResults(teamwork.getAssignmentResults()); // 将字符串解析为 JSONObject 对象
-        this.score = teamwork.getScore();
-    }
-    // getters and setters
+
     public int getTeamID() {
         return teamID;
     }
@@ -34,12 +22,12 @@ public class Teamwork {
         this.teamID = teamID;
     }
 
-    public JSONObject getWorkArrangement() {
-        return workArrangement.ToJSONObject();
+    public WorkArrangement getWorkArrangement() {
+        return workArrangement;
     }
 
-    public void setWorkArrangement(JSONObject workArrangement) {
-        this.workArrangement = new WorkArrangement(workArrangement);
+    public void setWorkArrangement(WorkArrangement workArrangement) {
+        this.workArrangement = workArrangement;
     }
 
     public int getMeetingMinutes() {
@@ -50,19 +38,65 @@ public class Teamwork {
         this.meetingMinutes = meetingMinutes;
     }
 
-    public JSONObject getAssignmentResults() {
-        return this.assignmentResults.ToJSONObject();
+    public AssignmentResults getAssignmentResults() {
+        return assignmentResults;
     }
 
-    public void setAssignmentResults(JSONObject assignmentResults) {
-        this.assignmentResults = new AssignmentResults(assignmentResults);
+    public void setAssignmentResults(AssignmentResults assignmentResults) {
+        this.assignmentResults = assignmentResults;
     }
 
     public int getScore() {
         return score;
     }
 
+    public int getTeamworkid() {
+        return this.teamworkid;
+    }
+
+    public void setTeamworkid(int teamworkid) {
+        this.teamworkid = teamworkid;
+    }
+
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public Teamwork(int teamID, WorkArrangement workArrangement, int meetingMinutes, AssignmentResults assignmentResults, int score) {
+        this.teamID = teamID;
+        this.workArrangement = workArrangement;
+        this.meetingMinutes = meetingMinutes;
+        this.assignmentResults = assignmentResults;
+        this.score = score;
+    }
+
+    public Teamwork(int teamID, WorkArrangement workArrangement, int meetingMinutes, AssignmentResults assignmentResults, int score, int teamworkid) {
+        this.teamID = teamID;
+        this.workArrangement = workArrangement;
+        this.meetingMinutes = meetingMinutes;
+        this.assignmentResults = assignmentResults;
+        this.score = score;
+        this.teamworkid = teamworkid;
+    }
+
+    public Teamwork(com.Data.Teamwork teamwork){
+        this.meetingMinutes=teamwork.getMeetingMinutes();
+        this.score=teamwork.getScore();
+        this.teamID=teamwork.getTeamID();
+        this.assignmentResults=new AssignmentResults(teamwork.getAssignmentResults());
+        this.workArrangement=new WorkArrangement(teamwork.getWorkArrangement());
+        this.teamworkid=teamwork.getTeamworkid();
+    }
+
+    @Override
+    public String toString() {
+        return "Teamwork{" +
+                "teamID=" + teamID +
+                ", workArrangement=" + workArrangement +
+                ", meetingMinutes=" + meetingMinutes +
+                ", assignmentResults=" + assignmentResults +
+                ", score=" + score +
+                ", teamworkid=" + teamworkid +
+                '}';
     }
 }
