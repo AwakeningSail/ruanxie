@@ -50,6 +50,8 @@ public class TeamService  {
         status[2]="多输入学生ID";
         status[3]="错误输入学生ID";
         status[4]="团队ID错误";
+        status[5]="加入成功";
+        status[6]="当前团队已满";
     }
     public com.Data1.Team TeamBuild(Student student) throws IOException {
         int maxTeamId =getMaxTeamId();
@@ -91,11 +93,11 @@ public class TeamService  {
         return teams;
     }
 
-    public boolean joinTeam(int TeamID,String StudentID) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public int joinTeam(int TeamID,String StudentID) throws IOException, NoSuchFieldException, IllegalAccessException {
         Team team=teamMapper.getTeamById(TeamID);
         Student student = studentMapper.getStudentById(StudentID);
         if(team.getTeamSize()==5){
-            return false;
+            return 6;
         }
         student.setTeamID(team.getTeamID());
         team.setTeamSize(team.getTeamSize()+1);
@@ -126,7 +128,7 @@ public class TeamService  {
         teamMapper.updateTeam(team);
         studentMapper.updateStudent(student);
         sqlSession.commit();
-        return true;
+        return 5;
     }
 
     public List<StudentOccupation>FindStudentOccupation(int teamID){
@@ -156,13 +158,16 @@ public class TeamService  {
         Field field ,field1;
         for(String i :strings){
             field=clazz.getDeclaredField(i);
-            field.setAccessible(true);
             field1=clazz1.getDeclaredField(i);
-            field1.setAccessible(true);
+            field.setAccessible(true);
             Object object=field.get(arrangementRequest);
             if(object!=null){
                 Student student = studentMapper.getStudentById((String) object);
-                field.set(arrangement,student);
+                System.out.println("---------------------------------------------------");
+                System.out.println(i);
+                System.out.println(student);
+                field1.setAccessible(true);
+                field1.set(arrangement,student);
             }
         }
         return arrangement;
@@ -171,41 +176,44 @@ public class TeamService  {
         Arrangement arrangement=FindTeamMemmber(arrangementRequest);
         Team team = teamMapper.getTeamById(TeamID);
         com.Data1.Team team1= new com.Data1.Team(team);
-        if(arrangement.equals(team.getArrangement())){
-            if(checkTeamMemebr(arrangement,team1.getArrangement())==0){
+        int op=checkTeamMemebr(arrangement,team1.getArrangement());
+        System.out.println(op);
+        if(op==0){
                 team1.setArrangement(arrangement);
                 team=new Team(team1);
                 teamMapper.updateTeam(team);
-                return 0;
-            }
-            return checkTeamMemebr(arrangement,team1.getArrangement());
+                sqlSession.commit();
         }
-        return 4;
+        return op;
+
     }
     int checkTeamMemebr(Arrangement arrangement,Arrangement arrangement1) throws NoSuchFieldException, IllegalAccessException {
+        String[] strings2= {"leader", "productManager", "planQualityManager", "testManager", "devManager"};
         List<String> strings=new ArrayList<>();
         List<String>  strings1= new ArrayList<>();
         Field field;
         Class<?> clazz=arrangement.getClass();
-        for(String i :strings) {
+        for(String i :strings2) {
             field = clazz.getDeclaredField(i);
             field.setAccessible(true);
-            Object object=field.get(arrangement);
+            Student object= (Student) field.get(arrangement);
             if(object!=null){
-                strings.add((String) object);
+                strings.add(object.getStudentID());
             }
         }
         Collections.sort(strings);
         clazz=arrangement1.getClass();
-        for(String i :strings) {
+        for(String i :strings2) {
             field = clazz.getDeclaredField(i);
             field.setAccessible(true);
-            Object object=field.get(arrangement1);
+            Student object= (Student) field.get(arrangement1);
             if(object!=null){
-                strings1.add((String) object);
+                strings1.add(object.getStudentID());
             }
         }
         Collections.sort(strings1);
+        System.out.println(strings);
+        System.out.println(strings1);
         if(strings.size()<strings1.size())return 1;
         if(strings.size()>strings1.size())return 2;
         Iterator<String> iterator1=strings1.iterator();
@@ -220,7 +228,38 @@ public class TeamService  {
         Team team = teamMapper.getTeamById(TeamID);
         team.setBuild(!team.isBuild());
         teamMapper.updateTeam(team);
+        sqlSession.commit();
     }
-
+    List<String>FindTeamMember(com.Data1.Team team) throws NoSuchFieldException, IllegalAccessException {
+        List<String>list=new ArrayList<>();
+        String[] strings= {"leader", "productManager", "planQualityManager", "testManager", "devManager"};
+        Class<?> clazz = team.getArrangement().getClass();
+        Field field ,field1;
+        for(String i :strings){
+            field=clazz.getDeclaredField(i);
+            field.setAccessible(true);
+            Student object=(Student) field.get(team.getArrangement());
+            if(object!=null){
+                list.add( object.getStudentID());
+            }
+        }
+        return list;
+    }
+    public boolean checkTeamMember(Set<String> strings,com.Data1.Team team) throws NoSuchFieldException, IllegalAccessException {
+        System.out.println("checkTeamMember working");
+        System.out.println(strings);
+        List<String> strings1=this.FindTeamMember(team);
+        System.out.println(strings1);
+        for(String s:strings){
+            boolean b=false;
+            for(String s1:strings1)if(s.equals(s1)){
+                b=true;
+            }
+            if(!b){
+                return false;
+            }
+        }
+        return true;
+    }
    // List<Team>
 }

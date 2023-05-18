@@ -10,7 +10,10 @@ public class objectRequest {
         this.status = status;
         this.object = object;
     }
-
+    public objectRequest(int status, Object object) {
+        this.status = String.valueOf(status);
+        this.object = object;
+    }
     @Override
     public String toString() {
         return "objectRequest{" +

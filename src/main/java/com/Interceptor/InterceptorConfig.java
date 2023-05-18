@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
-@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override

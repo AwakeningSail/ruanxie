@@ -42,6 +42,7 @@
                     <button class="layui-btn" onclick="xadmin.open('分配职务','AddBookInfo.html',800,600)">
                         <i class="layui-icon"></i>分配职务
                     </button>
+                    <button class="layui-btn" id="btn2" Width="60">更改状态</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -255,24 +256,46 @@
         }); //end
 
         //---------------表格搜索重载----------------
-        var $ = layui.$,
-            active = {
-                reload: function () {
-                    //执行重载
-                    table.reload('testReload', {
-                        url: 'http://localhost:8080/user/queryAllBook',
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                    });
-                }
-            };
         //监听是否点击搜索框
         $('.demoTable .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
+        $("#btn2").click(function () {
+            // var a= {
+            //     leader: $("#leader").val(),
+            //     productManager: $("#productManager").val(),
+            //     planQualityManager: $("#planQualityManager").val(),
+            //     devManager: $("#devManager").val(),
+            //     testManager: $("#testManager").val(),
+            // };
+
+            $.ajax({
+                url: 'http://localhost:8080/student/team/isBuild/update',
+                type: 'post',
+                // data: a,
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (objectRequest) {
+                    objectRequest = JSON.stringify(objectRequest);
+                    objectRequest = $.parseJSON(objectRequest);
+                    if (objectRequest.status == 1) { //成功
+                        layer.msg("更改成功!", {icon: 1});
+                    } else { //失败
+                        layer.msg("更改失败!", { icon: 5 });
+                    }
+                },
+                error: function () {
+                    layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+                }
+            });
+        });
+
     });
+
+
+
 </script>
 </body>
 

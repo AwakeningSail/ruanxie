@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>添加图书信息</title>
+    <title>分配职务</title>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
@@ -26,34 +26,50 @@
 <!--        </div>-->
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>图书名称
+                <span class="x-red">*</span>组长
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="Book_name" name="Book_name" autocomplete="off" placeholder="请输入图书名称"
+                <input type="text" id="leader" name="leader" autocomplete="off" placeholder="请输入组长学号"
                     class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>图书价格
+                <span class="x-red">*</span>产品经理
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="cost" name="cost" class="layui-input" placeholder="请输入图书价格">
+                <input type="text" id="productManager" name="productManager" class="layui-input" placeholder="请输入产品经理学号">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="x-red">*</span>图书介绍
+                <span class="x-red">*</span>计划和质量经理
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="introduction" name="introduction" class="layui-input"
-                    placeholder="请输入图书出版时间">
+                <input type="text" id="planQualityManager" name="planQualityManager" class="layui-input"
+                    placeholder="请输入计划和质量经理学号">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>开发经理
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="devManager" name="devManager" class="layui-input" placeholder="请输入开发经理学号">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>测试经理
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="testManager" name="testManager" class="layui-input" placeholder="请输入测试经理学号">
             </div>
         </div>
         <div class="layui-form-item">
             <label for="L_repass" class="layui-form-label">
             </label>
-            <button class="layui-btn" id="btn1" Width="60">添加</button>
+            <button class="layui-btn" id="btn1" Width="60">确认分配</button>
         </div>
     </div>
 
@@ -73,25 +89,27 @@
 
             $("#btn1").click(function () {
                 var data = {
-                    Book_ID: $("#Book_ID").val(),
-                    Book_name: $("#Book_name").val(),
-                    cost: $("#cost").val(),
-                    introduction: $("#introduction").val(),
+                    leader: $("#leader").val(),
+                    productManager: $("#productManager").val(),
+                    planQualityManager: $("#planQualityManager").val(),
+                    devManager: $("#devManager").val(),
+                    testManager: $("#testManager").val(),
                 };
 
                 $.ajax({
-                    url: 'http://localhost:8080/manager/addbook',
+                    url: 'http://localhost:8080/student/team/arrangement/update',
                     type: 'post',
-                    data: data,
+                    data: JSON.stringify(data),
                     dataType: 'json',
-                    //contentType: 'application/json',
+                    crossDomain: true,
+                    contentType: 'application/json',
                     success: function (result) {
                     	result = JSON.stringify(result);
                     	result = $.parseJSON(result);
-                        if (result.result == 0) { //成功
-                            layer.msg("添加图书信息成功!", {icon: 1});
+                        if (result.status == 0) { //成功
+                            layer.msg(result.object, {icon: 1});
                         } else { //失败
-                            layer.msg("添加图书信息失败!", { icon: 5 });
+                            layer.msg(result.object, { icon: 5 });
                         }
                     },
                     error: function () {

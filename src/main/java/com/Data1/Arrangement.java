@@ -136,4 +136,13 @@ public class Arrangement {
         this.devManager = studentService.Find(devManagerID);
     }
 
+    public int getSize(){
+        int a=0;
+        if(this.leader!=null)a++;
+        if(this.productManager !=null )a++;
+        if(this.planQualityManager !=null )a++;
+        if(this.testManager !=null)a++ ;
+        if(this.devManager !=null )a++;
+        return a;
+    }
 }

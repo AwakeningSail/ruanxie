@@ -1,5 +1,8 @@
 package com.Data;
 
+import com.Data1.WorkArrangement;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Objects;
 
 public class Teamwork {
@@ -8,16 +11,14 @@ public class Teamwork {
     private int meetingMinutes;
     private String assignmentResults;
     private int score;
+    private int teamworkid;
 
-    @Override
-    public String toString() {
-        return "Teamwork{" +
-                "teamID=" + teamID +
-                ", workArrangement='" + workArrangement + '\'' +
-                ", meetingMinutes=" + meetingMinutes +
-                ", assignmentResults='" + assignmentResults + '\'' +
-                ", score=" + score +
-                '}';
+    public int getTeamworkid() {
+        return teamworkid;
+    }
+
+    public void setTeamworkid(int teamworkid) {
+        this.teamworkid = teamworkid;
     }
 
     @Override
@@ -73,6 +74,15 @@ public class Teamwork {
         this.score = score;
     }
 
+    public Teamwork(int teamID, String workArrangement, int meetingMinutes, String assignmentResults, int score, int teamworkid) {
+        this.teamID = teamID;
+        this.workArrangement = workArrangement;
+        this.meetingMinutes = meetingMinutes;
+        this.assignmentResults = assignmentResults;
+        this.score = score;
+        this.teamworkid = teamworkid;
+    }
+
     public Teamwork(int teamID, String workArrangement, int meetingMinutes, String assignmentResults, int score) {
         this.teamID = teamID;
         this.workArrangement = workArrangement;
@@ -80,5 +90,32 @@ public class Teamwork {
         this.assignmentResults = assignmentResults;
         this.score = score;
     }
+    public void setAssignmentResults(com.Data1.AssignmentResults assignmentResults){
+        this.assignmentResults=JSONObject.toJSONString(assignmentResults);
+    }
+    public void setWorkArrangement(WorkArrangement workArrangement) {
+        this.workArrangement = JSONObject.toJSONString(workArrangement);
+    }
+    public Teamwork(com.Data1.Teamwork teamwork){
+        this.assignmentResults=JSONObject.toJSONString(teamwork.getAssignmentResults());
+        this.meetingMinutes=teamwork.getMeetingMinutes();
+        this.score=teamwork.getScore();
+        this.teamID=teamwork.getTeamID();
+        this.workArrangement=JSONObject.toJSONString(teamwork.getWorkArrangement());
+        this.teamworkid=teamwork.getTeamworkid();
+    }
+
+    @Override
+    public String toString() {
+        return "Teamwork{" +
+                "teamID=" + teamID +
+                ", workArrangement='" + workArrangement + '\'' +
+                ", meetingMinutes=" + meetingMinutes +
+                ", assignmentResults='" + assignmentResults + '\'' +
+                ", score=" + score +
+                ", teamworkid=" + teamworkid +
+                '}';
+    }
+
 // getters and setters
 }
