@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>任务界面</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body demoTable">
+                    <div class="layui-form layui-col-space5">
+
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" id="demoReload" placeholder="请输入任务名称" autocomplete="off"
+                                   class="layui-input"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="layui-card-header">
+                    <button id="addWork" class="layui-btn">
+                        <i class="layui-icon"></i>发布任务
+                    </button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- layui 引入-->
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<script src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/layui/2.5.7/layui.all.min.js"></script>
+<!-- 渲染-->
+<script type="text/html" id="barDemo1">
+    <a class="layui-btn layui-btn-xs" lay-event="work_file">提交任务</a>
+    <a class="layui-btn layui-btn-xs" lay-event="meeting_file">提交会议文件</a>
+</script>
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-xs" lay-event="work_assignment">任务分配详情</a>
+</script>
+<script type="text/html" id="barDemo3">
+    <a class="layui-btn layui-btn-xs" lay-event="assignment_result">任务完成详情</a>
+</script>
+
+<script type="text/javascript">
+    layui.use(['table', 'layer', 'form'], function () {
+        const table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        popForm = layui.form;
+
+        table.render({
+            elem: '#test',
+            toolbar: true,
+            loading: true,
+            method: "post",
+            title: "任务列表",
+            url: 'http://localhost:8080/student/teamwork/query',
+            cellMinWidth: 180,
+            contentType: 'application/json',
+            where: {
+                active: 'GetAll'
+            }, parseData: function (res) {
+                console.log(res);
+                return {
+                    "code": 0,
+                    "msg": "",
+                    "count": 1000,
+                    "data": res
+                }
+            },
+
+            cols: [
+                [{
+                    field: 'teamworkid',
+                    title: '任务编号',
+                    align: 'center'
+                }, {
+                    field: 'Work_Assignment',
+                    title: '任务分配详情',
+                    align: 'center',
+                    // templet: function (d) {
+                    //   return d.isbuild ? '是' : '否'; // 将布尔值转换为字符串格式
+                    // }
+                    toolbar: '#barDemo2',
+                }, {
+                    field: 'Assignment_Result',
+                    title: '任务完成详情',
+                    align: 'center',
+                    // templet: function (d) {
+                    //   return d.isbuild ? '是' : '否'; // 将布尔值转换为字符串格式
+                    // }
+                    toolbar: '#barDemo3'
+                }, {
+                    field: 'Operation',
+                    title: '操作',
+                    align: 'center',
+                    toolbar: '#barDemo1',
+                }, {
+                    field: 'score',
+                    title: '得分',
+                    align: 'center',
+                }]
+            ],
+            id: 'testReload',
+            page: true
+        });
+
+        // 监听提交任务按钮以及提交会议文件是否被点击
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'work_file') { // 提交任务
+                console.log(data);
+                xadmin.open('分配职务','SubTeamwork.html?teamworkid='+data.teamworkid.toString(),800,600);
+            } else if (layEvent === 'meeting_file') {
+                xadmin.open('分配职务','SubMeetingMinutes.html?teamworkid='+data.teamworkid.toString(),800,600);
+            } else if (layEvent === 'work_assignment') {
+                // html容器
+                var content = '<div id="work-assignment-container"></div>';
+                // 弹出任务分配情况框
+                layer.open({
+                    type: 1,
+                    title: '任务分配详情',
+                    content: content, // 弹窗内容是一个容器
+                    area: ['800px', '600px'], // 弹窗大小
+                    success: function (layero, index) {
+                        // 在容器中生成表格
+                        var cols = [[
+                            {field: 'studentID', title: '学生ID'},
+                            {field: 'task', title: '任务详情'}
+                        ]];
+                        console.log(data.workArrangements.workArrangemnets);
+                        layui.table.render({
+                            elem: '#work-assignment-container', // 将表格渲染到容器中
+                            cols: cols,
+                            data: data.workArrangements.workArrangemnets,
+                            parseData: function (res) {
+                                console.log(res);
+                                return {
+                                    "code": 0,
+                                    "msg": "",
+                                    "count": 1000,
+                                    "data": res
+                                }
+                            }
+                        });
+                    }
+                });
+            } else if (layEvent === 'assignment_result') {
+                // html容器
+                var content = '<div id="assignment_result-container"></div>';
+                // 弹出任务分配情况框
+                layer.open({
+                    type: 1,
+                    title: '任务完成详情',
+                    content: content, // 弹窗内容是一个容器
+                    area: ['800px', '600px'], // 弹窗大小
+
+                    success: function (layero, index) {
+                        // 在容器中生成表格
+                        var cols = [[
+                            {field: 'studentID', title: '学生ID'},
+                            {field: 'documentID', title: '提交文件'}
+                        ]];
+                        layui.table.render({
+                            elem: '#assignment_result-container', // 将表格渲染到容器中
+                            cols: cols,
+                            data: data.assignmentResults.assignmentResults,
+                            parseData: function (res) {
+                                console.log(res);
+                                return {
+                                    "code": 0,
+                                    "msg": "",
+                                    "count": 1000,
+                                    "data": res
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            // 添加新任务事件
+            $('#addWork').click(function () {
+                var data = {
+                    Team_ID: $("#TeamWorkId").val(),// 任务编号
+                    Member: $("#Work_Score").val(),// 任务得分
+                };
+                $.ajax({//开始异步
+                    url: 'http://localhost:8080/teamwork',
+                    type: 'post',
+                    data: data,
+                    dataType: 'json',
+                    contentType: 'application.json',
+                    success: function (result) {
+                        if (result.code == 0) {
+                            // 构造一条记录对象
+                            var newRow = {
+                                TeamWorkId: data.TeamWorkId,
+                                Work_Assignment: '<a class="layui-btn layui-btn-xs" lay-event="work_assignment">任务分配详情</a>',
+                                Assignment_Result: '<a class="layui-btn layui-btn-xs" lay-event="assignment_result">任务完成详情</a>',
+                                Operation: '#barDemo1',
+                                Work_Score: data.Work_Score,
+                            };
+                            // 获取表格实例，并添加新行数据
+                            layui.table.reload('testReload', {
+                                data: [newRow].concat(layui.table.cache['testReload'])
+                            });
+                            layer.msg("发布任务成功", {icon: 1});
+                        } else {
+                            layer.msg("发布任务失败！", {icon: 5});
+                        }
+                    }
+                })
+            })
+        })
+
+        //---------------表格搜索重载----------------
+        var $ = layui.$,
+            active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        url: '/api/get-new-row-data',
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            action: 'GetAll',
+                            number: $('#demoReload').val()
+                        }
+                    });
+                }
+            };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    })
+</script>
+</body>
+</html>

@@ -17,6 +17,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 创建一个 RoleInterceptor 对象，并将其注册到拦截器链中
+
         registry.addInterceptor(new TeacherInterceptor())
                 .addPathPatterns("/teacher/**")
                 .excludePathPatterns("/teacher/login");

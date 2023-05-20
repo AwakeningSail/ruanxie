@@ -5,7 +5,10 @@ import com.Data.Document;
 import java.util.List;
 
 public interface DocumentMapper {
-    Document getDocumentById(int TeamID);
+    Document getDocumentById(int DocunmentID);
+    Document getDocumentByaddress(String address);
+    int getMaxDocumentID();
+    List<Document>getDocumentByStudentID(String StudentID);
 
     void addDocument(Document document);
 

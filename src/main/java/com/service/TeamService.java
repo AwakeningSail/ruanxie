@@ -4,7 +4,9 @@ import com.Data.Student;
 import com.Data.Team;
 import com.Data1.Arrangement;
 import com.Data1.StudentOccupation;
+import com.Data1.WorkArrangement;
 import com.Request.ArrangementRequest;
+import com.alibaba.fastjson.JSONObject;
 import com.mapper.StudentMapper;
 import com.mapper.TeamMapper;
 import org.apache.ibatis.io.Resources;
@@ -45,7 +47,7 @@ public class TeamService  {
         teamMapper=sqlSession.getMapper(com.mapper.TeamMapper.class);
         studentMapper=sqlSession.getMapper(com.mapper.StudentMapper.class);
 
-        status[0]="团队职位分配成功！";
+        status[0]="团队职位配成功分！";
         status[1]="漏输入学生ID";
         status[2]="多输入学生ID";
         status[3]="错误输入学生ID";
@@ -245,8 +247,12 @@ public class TeamService  {
         }
         return list;
     }
-    public boolean checkTeamMember(Set<String> strings,com.Data1.Team team) throws NoSuchFieldException, IllegalAccessException {
+    public boolean checkTeamMember(List<WorkArrangement> workArrangements, com.Data1.Team team) throws NoSuchFieldException, IllegalAccessException {
         System.out.println("checkTeamMember working");
+        Set<String>strings=new HashSet<>();
+        for(WorkArrangement workArrangement:workArrangements){
+            strings.add(workArrangement.getStudentID());
+        }
         System.out.println(strings);
         List<String> strings1=this.FindTeamMember(team);
         System.out.println(strings1);

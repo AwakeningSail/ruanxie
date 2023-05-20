@@ -1,39 +1,50 @@
 package com.Data1;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class WorkArrangement {
-    private Map<String, String> workArrangemnet; // 存储每个人的具体分工，key 为人员名称，value 为分工描述
+    String StudentID;
+    String Task;
 
-    public WorkArrangement(Map<String, String> WorkArrangemnet) {
-        workArrangemnet=new HashMap<>();
-        for(String s:WorkArrangemnet.keySet()){
-            workArrangemnet.put(s,WorkArrangemnet.get(s));
-        }
-    }
-    public WorkArrangement(String workArrangemnet) {
-        this.workArrangemnet = (Map<String, String>) JSONObject.parse(workArrangemnet);
-    }
-
-    public Map<String, String> getWorkArrangemnet() {
-        return workArrangemnet;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkArrangement that = (WorkArrangement) o;
+        return StudentID.equals(that.StudentID) && Task.equals(that.Task);
     }
 
-    public void setWorkArrangemnet(Map<String, String> workArrangemnet) {
-        this.workArrangemnet = workArrangemnet;
+    @Override
+    public int hashCode() {
+        return Objects.hash(StudentID, Task);
     }
-    public String getValue(String key){
-        return this.workArrangemnet.get(key);
+
+    public String getStudentID() {
+        return StudentID;
+    }
+
+    public void setStudentID(String studentID) {
+        StudentID = studentID;
+    }
+
+    public String getTask() {
+        return Task;
+    }
+
+    public void setTask(String task) {
+        Task = task;
+    }
+
+    public WorkArrangement(String studentID, String task) {
+        StudentID = studentID;
+        Task = task;
     }
 
     @Override
     public String toString() {
         return "WorkArrangement{" +
-                "workArrangemnet=" + workArrangemnet +
+                "StudentID='" + StudentID + '\'' +
+                ", Task='" + Task + '\'' +
                 '}';
     }
 }

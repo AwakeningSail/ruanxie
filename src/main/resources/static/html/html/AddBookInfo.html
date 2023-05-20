@@ -15,15 +15,6 @@
 
 <body>
     <div class="layui-form" style="margin-left:200px;margin-top:30px">
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label">-->
-<!--                <span class="x-red">*</span>图书编号-->
-<!--            </label>-->
-<!--            <div class="layui-input-inline">-->
-<!--                <input type="text" id="Book_ID" name="Book_ID" autocomplete="off"-->
-<!--                    placeholder="请输入图书编号 " class="layui-input">-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="layui-form-item">
             <label class="layui-form-label">
                 <span class="x-red">*</span>组长
@@ -95,7 +86,17 @@
                     devManager: $("#devManager").val(),
                     testManager: $("#testManager").val(),
                 };
-
+                // var d=[];
+                // var json={
+                //     "studentID": "2",
+                //     "task": "task2"
+                // };
+                // d.push(json);
+                // d.push({
+                //     "studentID": "2",
+                //     "task": "task2"
+                // })
+                // console.log(JSON.stringify(d));
                 $.ajax({
                     url: 'http://localhost:8080/student/team/arrangement/update',
                     type: 'post',
@@ -104,8 +105,10 @@
                     crossDomain: true,
                     contentType: 'application/json',
                     success: function (result) {
+                        console.log(result);
                     	result = JSON.stringify(result);
                     	result = $.parseJSON(result);
+                        console.log(result);
                         if (result.status == 0) { //成功
                             layer.msg(result.object, {icon: 1});
                         } else { //失败

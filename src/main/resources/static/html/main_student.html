@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>图书管理系统</title>
+    <title>软协课程网站——学生端</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -25,7 +25,7 @@
     <!-- 顶部开始 -->
     <div class="container">
         <div class="logo">
-            <a href="main.html">图书管理系统</a></div>
+            <a href="main.html">学生端</a></div>
         <div class="left_open">
             <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
         </div>
@@ -45,33 +45,86 @@
             <ul id="nav">
                 <li>
                     <a href="javascript:;">
-                        <i class="iconfont left-nav-li layui-icon" lay-tips="图书管理">&#xe656;</i>
-                        <cite>图书流通管理</cite>
+                        <i class="iconfont left-nav-li layui-icon" lay-tips="我的班级">&#xe656;</i>
+                        <cite>我的班级</cite>
                         <i class="iconfont nav_right">&#xe697;</i></a>
                     <ul class="sub-menu">
-                    	<!--li>
-                            <a onclick="xadmin.add_tab('个人信息管理','html/UserInfo.html')">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>个人信息管理</cite></a>
-                        </li-->
                         <li>
-                            <a onclick="xadmin.add_tab('图书信息浏览','html/MyBookSection.html')">
+                            <a onclick="xadmin.add_tab('班级选择','')">
                                 <i class="iconfont">&#xe6a7;</i>
-                                <cite>图书信息浏览</cite></a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('购物车','html/ShoppingCart.html')">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>购物车</cite></a>
-                        </li>
-                        <li>
-                            <a onclick="xadmin.add_tab('订单记录','html/ShoppingOrder.html')">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>订单记录</cite></a>
+                                <cite>班级选择</cite></a>
                         </li>
                     </ul>
                 </li>
-
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont left-nav-li layui-icon" lay-tips="我的学习">&#xe656;</i>
+                        <cite>我的学习</cite>
+                        <i class="iconfont nav_right">&#xe697;</i></a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a onclick="xadmin.add_tab('学习资料','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>学习资料</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('课程考试','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>课程考试</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('成绩分析','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>成绩分析</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('学习提示','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>学习提示</cite></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont left-nav-li layui-icon" lay-tips="我的团队">&#xe656;</i>
+                        <cite>我的团队</cite>
+                        <i class="iconfont nav_right">&#xe697;</i></a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a onclick="xadmin.add_tab('团队列表','html/Teams.html')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>团队列表</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('职务分配','html/MyTeam.html')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>职务分配</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('团队作业','html/TeamWork.html')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>团队作业</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('阶段评分','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>阶段评分</cite></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont left-nav-li layui-icon" lay-tips="我的聊天">&#xe656;</i>
+                        <cite>我的聊天</cite>
+                        <i class="iconfont nav_right">&#xe697;</i></a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a onclick="xadmin.add_tab('师生交流','')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>师生交流</cite></a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

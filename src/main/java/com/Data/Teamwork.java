@@ -78,11 +78,11 @@ public class Teamwork {
         this.workArrangement = JSONObject.toJSONString(workArrangement);
     }
     public Teamwork(com.Data1.Teamwork teamwork){
-        if(teamwork.getAssignmentResults()!=null)this.assignmentResults=JSONObject.toJSONString(teamwork.getAssignmentResults().getAssignmentresults());
+        if(teamwork.getAssignmentResults()!=null)this.assignmentResults=JSONObject.toJSONString(teamwork.getAssignmentResults());
         this.meetingMinutes=teamwork.getMeetingMinutes();
         this.score=teamwork.getScore();
         this.teamID=teamwork.getTeamID();
-        if(teamwork.getWorkArrangement()!=null)this.workArrangement=JSONObject.toJSONString(teamwork.getWorkArrangement().getWorkArrangemnet());
+        if(teamwork.getWorkArrangements()!=null)this.workArrangement=JSONObject.toJSONString(teamwork.getWorkArrangements());
         this.teamworkid=teamwork.getTeamworkid();
     }
 

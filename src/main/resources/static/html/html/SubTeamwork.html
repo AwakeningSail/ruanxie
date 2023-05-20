@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提交任务</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">-->
+<!--                <span class="x-red">*</span>图书编号-->
+<!--            </label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" id="Book_ID" name="Book_ID" autocomplete="off"-->
+<!--                    placeholder="请输入图书编号 " class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>文件ID
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="documentID" name="documentID" autocomplete="off" placeholder="请输入文件ID"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">提交</button>
+        </div>
+    </div>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+
+            });
+            var url = decodeURI(location.search); //获取url中"?"符后的字串 ?vm_id=2
+            console.log(url);
+            var dd;
+            if(url.indexOf("?") != -1) {//undefined
+                str = url.substr(1);
+                strs = str.split("=");
+                dd = strs[1];
+            }
+            console.log(dd);
+            $("#btn1").click(function () {
+                console.log($("#documentID").val());
+                var d = {
+                    documentID: parseInt($("#documentID").val()),
+                    teamWorkID: parseInt(dd)
+                };
+                console.log(d);
+                $.ajax({
+                    url: 'http://localhost:8080/student/teamwork/teamWorkassignment/update',
+                    dataType: 'json',
+                    crossDomain: true,
+                    type: 'post',
+                    data: JSON.stringify(d),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        console.log(result);
+                    	result = JSON.stringify(result);
+                    	result = $.parseJSON(result);
+                        console.log(result);
+                        if (result.status == 2) { //成功
+                            layer.msg("任务提交成功!", {icon: 1});
+                        } else { //失败
+                            layer.msg("任务提交失败!", { icon: 5 });
+                        }
+                    },
+                    error: function () {
+                    	layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+        			}
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

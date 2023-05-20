@@ -1,5 +1,6 @@
 package com.service;
 
+import com.Data.Student;
 import com.Data.Teacher;
 import com.mapper.TeacherMapper;
 import org.apache.ibatis.io.Resources;
@@ -11,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class TeacherLogin {
+public class TeacherService {
 
     @Autowired(required=false)
     private TeacherMapper teacherMapper;
-    public TeacherLogin() throws IOException {
+    public TeacherService() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -24,7 +25,7 @@ public class TeacherLogin {
     }
 
     public Teacher Login(String ID, String Password){
-        Teacher teacher=check(ID);
+        Teacher teacher= Find(ID);
         if(teacher==null){
             return null;
         }
@@ -34,7 +35,7 @@ public class TeacherLogin {
             return null;
         }
     }
-    Teacher check(String ID){
+    Teacher Find(String ID){
         Teacher teacher=teacherMapper.getTeacherById(ID);
         if(teacher!=null)return teacher;
         teacher=teacherMapper.getTeacherById(ID);
