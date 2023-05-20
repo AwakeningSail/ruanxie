@@ -14,7 +14,7 @@
 <body class="login-bg">
 
 <div class="login layui-anim layui-anim-up">
-  <div class="message">图书管理系统登录</div>
+  <div class="message">软协课程网站登录</div>
   <div id="darkbannerwrap"></div>
 
   <form method="post" class="layui-form">
@@ -26,13 +26,13 @@
       <label class="layui-form-label">登录类型:</label>
       <div class="layui-input-block">
         <input type="radio" name="type" value="0" title="管理员">
-        <input type="radio" name="type" value="1" title="会员" checked>
+        <input type="radio" name="type" value="1" title="学生" checked>
+        <input type="radio" name="type" value="2" title="老师" checked>
       </div>
     </div>
     <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
     <hr class="hr20">
   </form>
-  <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" onClick="javascript:window.location.href='register.html';">
 </div>
 
 <script>
@@ -55,7 +55,7 @@
               console.log(response);
               if(response.status==1){
                 layer.msg(response.object, { icon:1});
-                //location.href = 'html/BookInfos.html';
+                location.href = 'main_student.html';
               }else{
                 layer.msg(response.object, { icon: 5 });
               }
