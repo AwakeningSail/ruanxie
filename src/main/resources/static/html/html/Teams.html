@@ -123,11 +123,11 @@
             return result
           }
         },{
-          field: 'isbuild',
+          field: 'build',
           title: '建立情况',
           align: 'center',
           templet: function (d) {
-            return d.isbuild ? '是' : '否'; // 将布尔值转换为字符串格式
+            return d.build ? '是' : '否'; // 将布尔值转换为字符串格式
           }
         },
           {
@@ -145,6 +145,7 @@
     table.on('tool(test)', function (obj) {
       var data = obj.data;
       var layEvent = obj.event;
+
       if (layEvent === 'join') { // 加入团队
         var d={
           teamID:data.teamID
@@ -170,6 +171,7 @@
         });
       }
     });
+
     // 添加新团队事件
     $('#addTeam').click(function () {
       $.ajax({//开始异步

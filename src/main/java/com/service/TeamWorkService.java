@@ -2,8 +2,10 @@ package com.service;
 
 import com.Data.Team;
 import com.Data.Teamwork;
+import com.Data1.AssignmentResult;
 import com.Data1.AssignmentResults;
 import com.Data1.WorkArrangement;
+import com.Data1.WorkArrangements;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mapper.StudentMapper;
@@ -59,6 +61,9 @@ public class TeamWorkService {
         status[1]="存在不属于团队的学生ID";
         status[2]="修改成功";
         status[3]="文件不存在";
+        status[4]="该团队还未建立";
+        status[5]="未加入到团队中";
+        status[6]="作业不存在";
     }
 
     public List<com.Data1.Teamwork>queryAllTeamWork(int TeamID){
@@ -66,28 +71,33 @@ public class TeamWorkService {
         List<Teamwork> teamworks=teamworkMapper.getTeamworkById(TeamID);
         List<com.Data1.Teamwork>teamworks1=new ArrayList<>();
         for(Teamwork teamwork:teamworks){
+            System.out.println(teamwork);
             System.out.println(new com.Data1.Teamwork(teamwork));
             teamworks1.add(new com.Data1.Teamwork(teamwork));
         }
         return teamworks1;
     }
 
-    public int addTeamWork(int TeamID, String jsonObject) throws NoSuchFieldException, IllegalAccessException {
+    public int addTeamWork(int TeamID, List<WorkArrangement> workArrangementList) throws NoSuchFieldException, IllegalAccessException {
         System.out.println("addteamwork working");
-        System.out.println(jsonObject);
-        Map map= (Map) JSON.parse(String.valueOf(jsonObject));
-        System.out.println(map);
-        WorkArrangement workArrangement=new WorkArrangement(map);
-        System.out.println(workArrangement.getWorkArrangemnet());
+        for(WorkArrangement workArrangement:workArrangementList){
+            System.out.println(workArrangement);
+        }
+        System.out.println(workArrangementList);
+        WorkArrangements workArrangements=new WorkArrangements(workArrangementList);
+        System.out.println(workArrangements.getWorkArrangemnets());
         Team team=teamMapper.getTeamById(TeamID);
+        if(!team.isBuild()){
+            return 4;
+        }
         com.Data1.Team team1=new com.Data1.Team(team);
-        if(!teamService.checkTeamMember(map.keySet(),team1)){
+        if(!teamService.checkTeamMember(workArrangements.getWorkArrangemnets(),team1)){
             return 1;
         }
         com.Data1.Teamwork teamwork=new com.Data1.Teamwork();
         teamwork.setTeamworkid(getMaxWorkID(TeamID));
         teamwork.setTeamID(TeamID);
-        teamwork.setWorkArrangement(workArrangement);
+        teamwork.setWorkArrangements(workArrangements);
         teamwork.setAssignmentResults(null);
         teamwork.setMeetingMinutes(0);
         System.out.println(teamwork);
@@ -106,16 +116,23 @@ public class TeamWorkService {
         return ans+1;
     }
 
-    public int updateTeamWorkAssignment(int TeamID,String studentID,int TeamworkID,int DocumentID){
+    public int updateTeamAssignmentResults(int TeamID,String studentID,int TeamworkID,int DocumentID){
         if(!documentService.check(DocumentID)){
             return 3;
         }
         Teamwork teamwork = teamworkMapper.getTeamworkByTeamworkID(TeamworkID);
+        if(teamwork==null){
+            return 6;
+        }
         com.Data1.Teamwork teamwork1=new com.Data1.Teamwork(teamwork);
-        Map<String,Integer> map=teamwork1.getAssignmentResults().getAssignmentresults();
-        if(map==null)map=new HashMap<>();
-        map.put(studentID,DocumentID);
-        teamwork1.setAssignmentResults(new AssignmentResults(map));
+        AssignmentResults assignmentResults;
+        if(teamwork1==null){
+            assignmentResults=new AssignmentResults();
+        }else{
+            assignmentResults=teamwork1.getAssignmentResults();
+        }
+        assignmentResults.setAssignmentResults(new AssignmentResult(studentID,DocumentID));
+        teamwork1.setAssignmentResults(assignmentResults);
         teamwork=new Teamwork(teamwork1);
         teamworkMapper.updateTeamwork(teamwork);
         sqlSession.commit();

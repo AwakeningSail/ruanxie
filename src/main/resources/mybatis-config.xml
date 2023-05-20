@@ -29,6 +29,7 @@
         <mapper resource="com/mapper/TeamDocument.xml"/>
         <mapper resource="com/mapper/TeamWork.xml"/>
         <mapper resource="com/mapper/TestPaper.xml"/>
+        <mapper resource="com/mapper/StudentDocumentMapper.xml"/>
     </mappers>
 
 

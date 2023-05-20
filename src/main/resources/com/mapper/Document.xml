@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mapper.DocumentMapper">
 
-    <select id="getDocumentById" parameterType="int" resultType="com.Data.Document">
-        SELECT * FROM Document WHERE DocumentID = #{documentId};
+    <resultMap id="documentResultMap" type="com.Data.Document">
+        <id property="documentID" column="DocumentID"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+    <select id="getDocumentById" resultMap="documentResultMap" parameterType="int">
+        SELECT * FROM Document WHERE DocumentID = #{documentID}
+    </select>
+
+    <select id="getDocumentByaddress" resultMap="documentResultMap" parameterType="String">
+        SELECT * FROM Document WHERE address = #{address}
+    </select>
+
+    <select id="getDocumentByStudentID" resultMap="documentResultMap" parameterType="String">
+        SELECT d.* FROM Document d
+                            INNER JOIN StudentDocument sd ON d.DocumentID = sd.DocumentID
+        WHERE sd.studentID = #{studentID}
+    </select>
+
+    <select id="getMaxDocumentID" resultType="int">
+        SELECT COALESCE(MAX(d.DocumentID), 0) FROM Document d
+
     </select>
 
     <insert id="addDocument" parameterType="com.Data.Document">
-        INSERT INTO Document (DocumentID, address)
-        VALUES (#{documentID}, #{address});
+        INSERT INTO Document (DocumentID, address) VALUES (#{documentID}, #{address})
     </insert>
 
     <update id="updateDocument" parameterType="com.Data.Document">
-        UPDATE Document
-        SET address = #{address}
-        WHERE DocumentID = #{documentID};
+        UPDATE Document SET address = #{address} WHERE DocumentID = #{documentID}
     </update>
 
     <delete id="deleteDocument" parameterType="int">
-        DELETE FROM Document WHERE DocumentID = #{documentId};
+        DELETE FROM Document WHERE DocumentID = #{documentID}
     </delete>
 
-    <select id="getAllDocuments" resultType="com.Data.Document">
-        SELECT * FROM Document;
+    <select id="getAllDocuments" resultMap="documentResultMap">
+        SELECT * FROM Document
     </select>
 
 </mapper>
