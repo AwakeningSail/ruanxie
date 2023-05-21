@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分配职务</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+<div class="layui-form" style="margin-left:200px;margin-top:30px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">
+            <span class="x-red">*</span>文件ID
+        </label>
+        <div class="layui-input-inline">
+            <input type="text" id="documentID" name="documentID" autocomplete="off" placeholder="请输入文件ID"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="L_repass" class="layui-form-label">
+        </label>
+        <button class="layui-btn" id="btn1" Width="60">下载</button>
+    </div>
+</div>
+
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<script charset="utf-8">
+    $(function () {
+        layui.use(['layer', 'laydate'], function () {
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+
+            // laydate.render({
+            //     elem: '#Book_ID',
+            //     trigger: 'click',
+            //     type: 'year'
+            // });
+        });
+
+        $("#btn1").click(function () {
+            $.ajax({
+                url: 'http://localhost:8080/download/'+$("#documentID").val(),
+                method: 'GET',
+                xhrFields: {
+                    responseType: 'blob' // 指定响应类型为二进制数据
+                },
+                success: function (data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    a.href = url;
+                    a.download = 'file.txt'; // 设置下载的文件名
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }
+            });
+        });
+
+    });
+</script>
+</body>
+
+</html>

@@ -2,144 +2,153 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>团队列表</title>
-  <link rel="stylesheet" href="../css/font.css">
-  <link rel="stylesheet" href="../css/xadmin.css">
-  <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
-  <script src="../lib/layui/layui.js" charset="utf-8"></script>
-  <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
-  <script type="text/javascript" src="../js/xadmin.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>团队列表</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.5.7/css/layui.min.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
 </head>
 <body>
 <div class="x-nav">
-  <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-     onclick="location.reload()" title="刷新">
-    <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
-  </a>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
 </div>
 <div class="layui-fluid">
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-md12">
-      <div class="layui-card">
-        <div class="layui-card-body demoTable">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body demoTable">
 
-          <div class="layui-card-header">
-            <button class="layui-btn" onclick="xadmin.open('上传文件','addDocument.html',800,600)">
-              <i class="layui-icon"></i>上传文件
-            </button>
-          </div>
-          <div class="layui-card-body ">
-            <table class="layui-hide" id="test" lay-filter="test"></table>
-          </div>
+                    <div class="layui-card-header">
+                        <button class="layui-btn" onclick="xadmin.open('上传文件','addDocument.html',800,600)">
+                            <i class="layui-icon"></i>上传文件
+                            <button class="layui-btn" onclick="xadmin.open('下载文件','download.html',800,600)">
+                                <i class="layui-icon"></i>下载文件
+                            </button>
+                    </div>
+                    <div class="layui-card-body ">
+                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                    </div>
 
-      </div>
+                    <div class="layui-card-body ">
+                        <table class="layui-hide" id="a" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-xs" lay-event="download">下载文件</a>
-</script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="download">下载文件</a>
+    </script>
 
-<script type="text/javascript">
-  layui.use(['table', 'layer', 'form'], function () {
-    const table = layui.table;
-    var layer = layui.layer;
-    var form = layui.form;
-    popForm = layui.form;
+    <script type="text/javascript">
+        layui.use(['table', 'layer', 'form'], function () {
+            const table = layui.table;
+            var layer = layui.layer;
+            var form = layui.form;
+            popForm = layui.form;
 
-    table.render({
-      elem: '#test',
-      toolbar: true,
-      loading: true,
-      method:"post",
-      title: "团队列表",
-      url:'http://localhost:8080/queryall',
-      cellMinWidth: 180,
-      contentType: 'application/json',
-      tooltip: true,
-      where:{
-        active:'GetAll'
-      },parseData: function (res) {
-        console.log(res);
-        return {
-          "code": 0,
-          "msg": "",
-          "count": 1000,
-          "data": res
-        }
-      },
+            table.render({
+                elem: '#test',
+                toolbar: true,
+                loading: true,
+                method: "post",
+                title: "团队列表",
+                url: 'http://localhost:8080/queryall',
+                cellMinWidth: 180,
+                contentType: 'application/json',
+                tooltip: true,
+                where: {
+                    active: 'GetAll'
+                }, parseData: function (res) {
+                    console.log(res);
+                    return {
+                        "code": 0,
+                        "msg": "",
+                        "count": 1000,
+                        "data": res
+                    }
+                },
 
-      cols: [
-        [{
-          field: 'name',
-          title: '文件名称',
-          align: 'center'
-        }, {
-          field: 'Operation',
-          title: '操作',
-          align: 'center',
-          toolbar: '#barDemo'
+                cols: [
+                    [{
+                        field: 'documentID',
+                        title: '文件ID',
+                        align: 'center'
+                    }, {
+                        field: 'name',
+                        title: '文件名称',
+                        align: 'center'
+                    }, {
+                        field: 'Operation',
+                        title: '操作',
+                        align: 'center',
+                        toolbar: '#barDemo'
 
-        }]
-      ],
-      id: 'testReload',
-      page: true
-    });
+                    }]
+                ],
+                id: 'testReload',
+                page: true
+            });
 
-    // 监听加入团队按钮是否被点击
-    table.on('tool(test)', function (obj) {
-      var data = obj.data;
-      var layEvent = obj.event;
-      $.ajax({
-        url: 'http://localhost:8080/download/' + data.documentID,
-        method: 'GET',
-        xhrFields: {
-          responseType: 'blob' // 指定响应类型为二进制数据
-        },
-        success: function(data) {
-          var a = document.createElement('a');
-          var url = window.URL.createObjectURL(data);
-          a.href = url;
-          a.download = 'file.txt'; // 设置下载的文件名
-          a.click();
-          window.URL.revokeObjectURL(url);
-        }
-      });
-    });
+            // 监听加入团队按钮是否被点击
+            table.on('tool(test)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                $.ajax({
+                    url: 'http://localhost:8080/download/' + data.documentID,
+                    method: 'GET',
+                    xhrFields: {
+                        responseType: 'blob' // 指定响应类型为二进制数据
+                    },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'file.txt'; // 设置下载的文件名
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }
+                });
+            });
 
-    // 上传文件
-    $('#addDocument').click(function () {
+            // 上传文件
+            $('#addDocument').click(function () {
 
-      layer.confirm(function (index) {
-        $.ajax({
-          url: 'http://localhost:8080/student/team/join',
-          type: 'post',
-          dataType: 'json',
-          data:JSON.stringify(d),
-          contentType: 'application/json',
-          crossDomain: true,
-          success: function (result) {
-            if (result.status == 0) {
-              layer.msg("加入团队成功", { icon: 1 });
-              layui.table.reload('testReload');
-            } else {
-              layer.msg(result.object, { icon: 5 });
-            }
-          }
+                layer.confirm(function (index) {
+                    $.ajax({
+                        url: 'http://localhost:8080/student/team/join',
+                        type: 'post',
+                        dataType: 'json',
+                        data: JSON.stringify(d),
+                        contentType: 'application/json',
+                        crossDomain: true,
+                        success: function (result) {
+                            if (result.status == 0) {
+                                layer.msg("加入团队成功", {icon: 1});
+                                layui.table.reload('testReload');
+                            } else {
+                                layer.msg(result.object, {icon: 5});
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            })
+        })
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
         });
-        layer.close(index);
-      });
-    })
-  })
-
-  $('.demoTable .layui-btn').on('click', function () {
-    var type = $(this).data('type');
-    active[type] ? active[type].call(this) : '';
-  });
-</script>
+    </script>
 </body>
 </html>

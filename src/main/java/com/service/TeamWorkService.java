@@ -2,10 +2,7 @@ package com.service;
 
 import com.Data.Team;
 import com.Data.Teamwork;
-import com.Data1.AssignmentResult;
-import com.Data1.AssignmentResults;
-import com.Data1.WorkArrangement;
-import com.Data1.WorkArrangements;
+import com.Data1.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mapper.StudentMapper;
@@ -64,6 +61,8 @@ public class TeamWorkService {
         status[4]="该团队还未建立";
         status[5]="未加入到团队中";
         status[6]="作业不存在";
+        status[7]="未给该同学分配任务";
+        status[8]="修改分数成功";
     }
 
     public List<com.Data1.Teamwork>queryAllTeamWork(int TeamID){
@@ -120,12 +119,22 @@ public class TeamWorkService {
         if(!documentService.check(DocumentID)){
             return 3;
         }
-        Teamwork teamwork = teamworkMapper.getTeamworkByTeamworkID(TeamworkID);
+        Teamwork teamwork = teamworkMapper.getTeamworkByID1(TeamworkID,TeamID);
         if(teamwork==null){
             return 6;
         }
         com.Data1.Teamwork teamwork1=new com.Data1.Teamwork(teamwork);
         System.out.println(teamwork1);
+        boolean b=false;
+        for(WorkArrangement workArrangement:teamwork1.getWorkArrangements().getWorkArrangemnets()){
+            if(studentID.equals(workArrangement.getStudentID())){
+                b=true;
+                break;
+            }
+        }
+        if(!b){
+            return 7;
+        }
         AssignmentResults assignmentResults;
         if(teamwork1==null){
             assignmentResults=new AssignmentResults();
@@ -140,14 +149,36 @@ public class TeamWorkService {
         sqlSession.commit();
         return 2;
     }
-    public int updateTeamWorkMeetingMinutes(int TeamworkID,int DocumentID){
+    public int updateTeamWorkMeetingMinutes(int TeamworkID,int TeamID,int DocumentID){
         if(!documentService.check(DocumentID)){
             return 3;
         }
-        Teamwork teamwork = teamworkMapper.getTeamworkByTeamworkID(TeamworkID);
+        Teamwork teamwork = teamworkMapper.getTeamworkByID1(TeamworkID,TeamID);
         teamwork.setMeetingMinutes(DocumentID);
         teamworkMapper.updateTeamwork(teamwork);
         sqlSession.commit();
         return 2;
+    }
+    public int updateScores(int TeamID,String studentID,int TeamworkID,int score){
+        Teamwork teamwork = teamworkMapper.getTeamworkByID1(TeamworkID,TeamID);
+        com.Data1.Teamwork teamwork1=new com.Data1.Teamwork(teamwork);
+        boolean b=false;
+        for(WorkArrangement workArrangement:teamwork1.getWorkArrangements().getWorkArrangemnets()){
+            if(studentID.equals(workArrangement.getStudentID())){
+                b=true;
+                break;
+            }
+        }
+        if(!b){
+            return 7;
+        }
+        TeamScore score1=new TeamScore(studentID,score);
+        teamwork1.getTeamScores().setTeamScores(score1);
+        teamwork=new Teamwork(teamwork1);
+        teamworkMapper.updateTeamwork(teamwork);
+        System.out.println(JSONObject.toJSONString(teamwork1.getTeamScores()));
+        System.out.println(teamwork);
+        sqlSession.commit();
+        return 8;
     }
 }

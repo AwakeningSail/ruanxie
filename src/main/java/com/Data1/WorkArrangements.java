@@ -11,7 +11,11 @@ public class WorkArrangements {
     public WorkArrangements(String s){
         JSONObject jsonObject=JSONObject.parseObject(s);
         this.size=jsonObject.getInteger("size");
-        this.workArrangemnets=jsonObject.getJSONArray("workArrangemnets");
+        List<JSONObject> strings=jsonObject.getJSONArray("workArrangemnets");
+        workArrangemnets=new ArrayList<>();
+        for(JSONObject jsonObject1:strings){
+            workArrangemnets.add(new WorkArrangement(jsonObject1));
+        }
     }
     public WorkArrangements(Map<String, String> map){
         this.workArrangemnets=new ArrayList<>();

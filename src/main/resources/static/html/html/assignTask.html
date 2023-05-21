@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>分配任务</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+        <h1>请为组员分别分配任务</h1>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="studentID1" name="id" autocomplete="off" placeholder="组员学号"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 350px;">
+                <input type="text" id="task1" name="task" autocomplete="off" placeholder="任务描述(最长50个字符)"
+                       class="layui-input" maxlength="50">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="studentID2" name="id" autocomplete="off" placeholder="组员学号"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 350px;">
+                <input type="text" id="task2" name="task" autocomplete="off" placeholder="任务描述"
+                       class="layui-input" maxlength="50">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="studentID3" name="id" autocomplete="off" placeholder="组员学号"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 350px;">
+                <input type="text" id="task3" name="task" autocomplete="off" placeholder="任务描述"
+                       class="layui-input" maxlength="50">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="studentID4" name="id" autocomplete="off" placeholder="组员学号"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 350px;">
+                <input type="text" id="task4" name="task" autocomplete="off" placeholder="任务描述"
+                       class="layui-input" maxlength="50">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="text" id="studentID5" name="id" autocomplete="off" placeholder="组员学号"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 350px;">
+                <input type="text" id="task5" name="task" autocomplete="off" placeholder="任务描述"
+                       class="layui-input" maxlength="50">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">确认分配</button>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+
+                // laydate.render({
+                //     elem: '#Book_ID',
+                //     trigger: 'click',
+                //     type: 'year'
+                // });   //日期选择器
+            });
+
+            $("#btn1").click(function () {
+                
+
+                var ids = document.getElementsByName("id");
+                var tasks = document.getElementsByName("task");
+                var num1=0,num2=0
+                for (var i = 0; i < ids.length; i++) {
+                    var idv = ids[i].value;
+                    if (idv!="")
+                    num1++
+                }
+                for (var i = 0; i < tasks.length; i++) {
+                    var taskv = tasks[i].value;
+                    if (taskv!="")
+                        num2++
+                }
+                 // console.log(num1);
+                if(num1===0&&num2===0){
+                    alert("请输入内容");
+                    return false;
+                }
+
+                for (var i = 0; i < num1 ; i++) {
+                    var idv = ids[i].value;
+                    var taskv= tasks[i].value;
+                    if (idv!=""&&taskv===""){
+                        alert("任务描述不能为空");
+                        return false;
+                    }
+                }
+
+                for (var i = 0; i < num2 ; i++) {
+                    var idv = ids[i].value;
+                    var taskv= tasks[i].value;
+                    if (taskv!=""&&idv===""){
+                        alert("学号不能为空");
+                        return false;
+                    }
+                }
+                //传数据
+                var d=[];
+
+                for (var i = 1; i <= num2 ; i++) {
+                    var studentID = $("#studentID"+i).val();
+                    var task = $("#task"+i).val();
+                    d.push({
+                        "studentID": studentID,
+                        "task": task
+                    });
+                }
+                console.log(JSON.stringify(d));
+
+                $.ajax({
+                    url: 'http://localhost:8080/student/teamwork/add',
+                    type: 'post',
+                    data: JSON.stringify(d),
+                    dataType: 'json',
+                    crossDomain: true,
+                    contentType: 'application/json',
+                    success: function (result) {
+                    	result = JSON.stringify(result);
+                    	result = $.parseJSON(result);
+                        if (result.status == 0) { //成功
+                            layer.msg(result.object, {icon: 2});
+                        } else { //失败
+                            layer.msg(result.object, { icon: 5 });
+                        }
+                    },
+                    error: function () {
+                    	layer.msg("服务器连接失败,稍后请重试", { icon: 5 });
+        			}
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

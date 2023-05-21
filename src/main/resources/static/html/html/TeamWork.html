@@ -39,7 +39,7 @@
 
 
                 <div class="layui-card-header">
-                    <button id="addWork" class="layui-btn">
+                    <button class="layui-btn" onclick="xadmin.open('发布任务','assignTask.html',800,600)">
                         <i class="layui-icon"></i>发布任务
                     </button>
                 </div>
@@ -58,6 +58,7 @@
 <script type="text/html" id="barDemo1">
     <a class="layui-btn layui-btn-xs" lay-event="work_file">提交任务</a>
     <a class="layui-btn layui-btn-xs" lay-event="meeting_file">提交会议文件</a>
+    <a class="layui-btn layui-btn-xs" lay-event="score">打分</a>
 </script>
 <script type="text/html" id="barDemo2">
     <a class="layui-btn layui-btn-xs" lay-event="work_assignment">任务分配详情</a>
@@ -65,7 +66,8 @@
 <script type="text/html" id="barDemo3">
     <a class="layui-btn layui-btn-xs" lay-event="assignment_result">任务完成详情</a>
 </script>
-
+<script type="text/html" id="barDemo4">
+</script>
 <script type="text/javascript">
     layui.use(['table', 'layer', 'form'], function () {
         const table = layui.table;
@@ -120,10 +122,6 @@
                     title: '操作',
                     align: 'center',
                     toolbar: '#barDemo1',
-                }, {
-                    field: 'score',
-                    title: '得分',
-                    align: 'center',
                 }]
             ],
             id: 'testReload',
@@ -134,12 +132,15 @@
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
+            console.log(layEvent);
             if (layEvent === 'work_file') { // 提交任务
                 console.log(data);
-                xadmin.open('分配职务','SubTeamwork.html?teamworkid='+data.teamworkid.toString(),800,600);
+                xadmin.open('提交作业', 'SubTeamwork.html?teamworkid=' + data.teamworkid.toString(), 800, 600);
             } else if (layEvent === 'meeting_file') {
-                xadmin.open('分配职务','SubMeetingMinutes.html?teamworkid='+data.teamworkid.toString(),800,600);
-            } else if (layEvent === 'work_assignment') {
+                xadmin.open('提交会议纪要', 'SubMeetingMinutes.html?teamworkid=' + data.teamworkid.toString(), 800, 600);
+            } else if (layEvent === 'score') {
+                xadmin.open('评分', 'score.html?teamworkid=' + data.teamworkid.toString(), 800, 600);
+            }else if (layEvent === 'work_assignment') {
                 // html容器
                 var content = '<div id="work-assignment-container"></div>';
                 // 弹出任务分配情况框
@@ -185,19 +186,52 @@
                         // 在容器中生成表格
                         var cols = [[
                             {field: 'studentID', title: '学生ID'},
-                            {field: 'documentID', title: '提交文件'}
+                            {field: 'documentID', title: '提交文件'},
+                            {field: 'teamScore', title: '分数'},
+                            {field: 'Operation', title: '操作', align: 'center', toolbar: '#barDemo4'}
                         ]];
+                        console.log(data);
+                        var matchedData = [];
+                        var item = data;
+                        var assignmentResults = item.assignmentResults.assignmentResults;
+                        var teamScores = item.teamScores.teamScores;
+                        // 遍历 assignmentResults 数组
+                        for (var j = 0; j < assignmentResults.length; j++) {
+                            var assignmentResult = assignmentResults[j];
+                            var studentID = assignmentResult.studentID;
+
+                            // 查找匹配的 teamScores
+                            var matchedTeamScore = teamScores.find(function (score) {
+                                return score.studentID === studentID;
+                            });
+
+                            if (matchedTeamScore) {
+                                // 将匹配的数据添加到 matchedData 数组
+                                matchedData.push({
+                                    documentID: assignmentResult.documentID,
+                                    studentID: assignmentResult.studentID,
+                                    teamScore: matchedTeamScore.score
+                                });
+                            } else {
+                                matchedData.push({
+                                    documentID: assignmentResult.documentID,
+                                    studentID: assignmentResult.studentID,
+                                    teamScore: 0
+                                });
+                            }
+                        }
                         layui.table.render({
                             elem: '#assignment_result-container', // 将表格渲染到容器中
                             cols: cols,
-                            data: data.assignmentResults.assignmentResults,
-                            parseData: function (res) {
-                                console.log(res);
+                            data: matchedData,
+                            toolbar: true,
+                            loading: true,
+                            parseData: function (matchedData) {
                                 return {
                                     "code": 0,
                                     "msg": "",
                                     "count": 1000,
-                                    "data": res
+                                    "data": matchedData
                                 }
                             }
                         });

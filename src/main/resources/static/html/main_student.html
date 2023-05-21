@@ -25,10 +25,11 @@
     <!-- 顶部开始 -->
     <div class="container">
         <div class="logo">
-            <a href="main.html">学生端</a></div>
+            <a href="main_student.html">学生端</a></div>
         <div class="left_open">
             <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
         </div>
+
         <ul class="layui-nav right" lay-filter="">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="userTip"></a>
@@ -122,6 +123,19 @@
                             <a onclick="xadmin.add_tab('师生交流','')">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>师生交流</cite></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont left-nav-li layui-icon" lay-tips="文件缓存">&#xe656;</i>
+                        <cite>文件缓存</cite>
+                        <i class="iconfont nav_right">&#xe697;</i></a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a onclick="xadmin.add_tab('文件列表','html/Document.html')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>文件列表</cite></a>
                         </li>
                     </ul>
                 </li>

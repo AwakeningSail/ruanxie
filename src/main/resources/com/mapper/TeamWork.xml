@@ -14,6 +14,9 @@
     <select id="getTeamworkById" resultMap="teamworkResultMap" parameterType="int">
         SELECT * FROM Teamwork WHERE TeamID = #{teamId}
     </select>
+    <select id="getTeamworkByID1" resultMap="teamworkResultMap" parameterType="int">
+        SELECT * FROM Teamwork WHERE TeamID = #{teamID} AND TeamworkID = #{TeamworkID}
+    </select>
 
     <insert id="addTeamwork" parameterType="com.Data.Teamwork">
         INSERT INTO Teamwork (TeamID, TeamworkID, WorkArrangement, MeetingMinutes, Assignmentresults, Score)

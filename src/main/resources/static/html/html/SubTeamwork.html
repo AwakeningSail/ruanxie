@@ -73,13 +73,11 @@
                     contentType: 'application/json',
                     success: function (result) {
                         console.log(result);
-                    	result = JSON.stringify(result);
-                    	result = $.parseJSON(result);
-                        console.log(result);
+                        console.log(result.status);
                         if (result.status == 2) { //成功
-                            layer.msg("任务提交成功!", {icon: 1});
+                            layer.msg(result.object, {icon: 1});
                         } else { //失败
-                            layer.msg("任务提交失败!", { icon: 5 });
+                            layer.msg(result.object, { icon: 5 });
                         }
                     },
                     error: function () {

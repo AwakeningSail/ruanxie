@@ -1,5 +1,7 @@
 package com.Data1;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Objects;
 
 public class WorkArrangement {
@@ -39,7 +41,10 @@ public class WorkArrangement {
         StudentID = studentID;
         Task = task;
     }
-
+    public WorkArrangement(JSONObject jsonObject) {
+        StudentID=jsonObject.getString("studentID");
+        Task=jsonObject.getString("task");
+    }
     @Override
     public String toString() {
         return "WorkArrangement{" +

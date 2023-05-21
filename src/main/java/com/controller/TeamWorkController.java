@@ -6,6 +6,7 @@ import com.Data1.Teamwork;
 import com.Data1.WorkArrangement;
 import com.Request.addTeamWorkAssignmentRequest;
 import com.Request.objectRequest;
+import com.Request.updateScoreRequest;
 import com.RuanxieApplication;
 import com.alibaba.fastjson.JSON;
 import com.service.StudentService;
@@ -63,9 +64,18 @@ public class TeamWorkController {
     @PostMapping("/teamWorkmeetingMinutes/update")
     public ResponseEntity<String> updateTeamWorkMeetingMinutes(@ApiParam("给出对应学生文件缓存区的文件id")@RequestBody addTeamWorkAssignmentRequest request) throws IOException, NoSuchFieldException, IllegalAccessException {
 
+        System.out.println(request);
         teamWorkService = new TeamWorkService();
-        int status=teamWorkService.updateTeamWorkMeetingMinutes(request.getTeamWorkID(),request.getDocumentID());
+        int status=teamWorkService.updateTeamWorkMeetingMinutes(request.getTeamWorkID(),RuanxieApplication.maplog.FindTeamID(),request.getDocumentID());
         return ResponseEntity.ok(JSON.toJSONString(new objectRequest(status,teamWorkService.getStatus(status))));
     }
+    @ApiOperation(value = "学生", notes = "修改评分")
+    @PostMapping("/score/update")
+    public ResponseEntity<String> updateScore(@ApiParam("给出待修改的学生id，作业id，以及分数")@RequestBody updateScoreRequest request) throws IOException, NoSuchFieldException, IllegalAccessException {
 
+        System.out.println(request);
+        teamWorkService = new TeamWorkService();
+        int status=teamWorkService.updateScores(RuanxieApplication.maplog.FindTeamID(),request.getStudentID(),request.getTeamworkID(),request.getScore());
+        return ResponseEntity.ok(JSON.toJSONString(new objectRequest(status,teamWorkService.getStatus(status))));
+    }
 }

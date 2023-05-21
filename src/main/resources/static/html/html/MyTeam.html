@@ -5,285 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>团队成员</title>
+    <title>上传更改文件</title>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
-    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
 </head>
 
 <body>
-<div class="x-nav">
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-       onclick="location.reload()" title="刷新">
-        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
-    </a>
-</div>
-<div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <div class="layui-card-body demoTable">
-                    <div class="layui-form layui-col-space5">
-
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <input type="text" id="demoReload" placeholder="请输入学生id" autocomplete="off"
-                                   class="layui-input"></div>
-                        <div class="layui-input-inline layui-show-xs-block">
-                            <button class="layui-btn" data-type="reload">搜索</button>
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="layui-card-header">
-                    <button class="layui-btn" onclick="xadmin.open('分配职务','AddBookInfo.html',800,600)">
-                        <i class="layui-icon"></i>分配职务
-                    </button>
-                    <button class="layui-btn" id="btn2" Width="60">更改状态</button>
-                </div>
-                <div class="layui-card-body ">
-                    <table class="layui-hide" id="test" lay-filter="test"></table>
-                </div>
-            </div>
+<div class="layui-form" style="margin-left:200px;margin-top:30px">
+    <!--        <div class="layui-form-item">-->
+    <!--            <label class="layui-form-label">-->
+    <!--                <span class="x-red">*</span>图书编号-->
+    <!--            </label>-->
+    <!--            <div class="layui-input-inline">-->
+    <!--                <input type="text" id="Book_ID" name="Book_ID" autocomplete="off"-->
+    <!--                    placeholder="请输入图书编号 " class="layui-input">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">
+            <span class="x-red">*</span>文件
+        </label>
+        <div class="layui-input-inline">
+            <input type="file" id="fileInput" name="file" autocomplete="off" placeholder="请上传文件"
+                   class="layui-input">
         </div>
     </div>
-</div>
-<!-- 弹出层 -->
-<div class="layui-row" id="popUpdateTest" style="display:none;margin-left:200px;margin-top:30px">
-    <div class="layui-col-md10">
-        <form class="layui-form" lay-filter="formTestFilter">
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>图书编号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="Book_ID" name="Book_ID" autocomplete="off"
-                           placeholder="请输入图书编号 " class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>图书名称
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="Book_name" name="Book_name" autocomplete="off"
-                           placeholder="请输入图书名称" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>图书价格
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="cost" name="cost" class="layui-input" placeholder="请输入图书价格">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>图书介绍
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="introduction" name="introduction" class="layui-input"
-                           placeholder="请输入图书介绍">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                </label>
-                <a class="layui-btn" id="btn1" Width="60">修改</a>
-            </div>
-        </form>
+
+    <div class="layui-form-item">
+        <label for="L_repass" class="layui-form-label">
+        </label>
+        <button class="layui-btn" id="btn1" Width="60">确认上传</button>
     </div>
 </div>
+
 <script src="../lib/layui/layui.js" charset="utf-8"></script>
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
-</script>
-<script type="text/javascript">
-    layui.use(['table', 'layer', 'form', 'laydate'], function () {
-        var table = layui.table;
-        var layer = layui.layer;
-        var form = layui.form;
-        var laydate = layui.laydate;
-        popForm = layui.form;
+<script charset="utf-8">
+    $(function () {
+        layui.use(['layer', 'laydate'], function () {
+            var layer = layui.layer;
+            var laydate = layui.laydate;
 
-        table.render({
-            elem: '#test',
-            toolbar: true,
-            loading: true,
-            method: "post",
-            title: "成员列表",
-            url: 'http://localhost:8080/student/team/occupation/query',
-            cellMinWidth: 120,
-            contentType: 'application/json',
-            limit: 10, // 每页显示 10 条记录
-            limits: [10, 20, 50], // 每页显示的条数可选项
-            where: {
-                action: 'GetAll'
-            }, parseData: function (res) {
-
-                console.log(res);
-                return {
-                    "code": 0,
-                    "msg": "",
-                    "count": 1000,
-                    "data": res
-                }
-            },
-
-            cols: [
-                [{
-                    field: 'studentID',
-                    title: '学生ID',
-                    align: 'center',
-                    sort:true
-                }, {
-                    field: 'name',
-                    title: '姓名',
-                    align: 'center',
-
-                }, {
-                    field: 'telephone',
-                    title: '电话',
-                    align: 'center'
-                }, {
-                    field: 'email',
-                    title: '邮箱',
-                    align: 'center'
-                }, {
-                    field: 'occupation',
-                    title: '职务',
-                    align: 'center',
-                    templet: function (d) {
-                        return "<div style='color:red'>" + d.occupation + "</div>"
-                    },
-                    // sort: true
-                }
-                ]
-            ],
-            id: 'testReload',
-            page: true
+            // laydate.render({
+            //     elem: '#Book_ID',
+            //     trigger: 'click',
+            //     type: 'year'
+            // });
         });
 
-        //start监听
-        table.on('tool(test)', function (obj) {
-            var data = obj.data;
-            var layEvent = obj.event;
-            if (layEvent === 'edit') { //编辑
-                layer.open({
-                    type: 1,
-                    title: '编辑',
-                    area: ['800px', '600px'],
-                    content: $("#popUpdateTest")
-                });
-                popForm.val("formTestFilter", {
-                    "Book_ID": data.Book_ID,
-                    "Book_name": data.Book_name,
-                    "cost": data.cost,
-                    "introduction": data.introduction,
-                });
-                popForm.render(null, 'formTestFilter');
-                //---------------点击修改按钮---------------------------
-                $("#btn1").click(function () {
-                    layer.confirm('要修改《' + data.Book_name + "》的信息吗?", function (index) {
-                        var edit = {
-                            id: $("#Book_ID").val(),
-                            Book_name: $("#Book_name").val(),
-                            cost: $("#cost").val(),
-                            introduction: $("#introduction").val(),
-                        };
-                        $.ajax({ // 开始异步请求
-                            url: 'http://localhost:8080/manager/updatebook',
-                            type: 'post',
-                            data: edit,
-                            dataType: 'json',
-                            //contentType: 'application/json',
-                            success: function (result) {
-                                result = JSON.stringify(result);
-                                result = $.parseJSON(result);
-                                if (result.result == 0) { //修改成功
-                                    layer.msg("修改图书信息成功!", {icon: 1});
-                                } else { //修改失败
-                                    layer.msg("修改图书信息失败!", {icon: 5});
-                                }
-                            },
-                            error: function () {
-                                layer.msg("服务器连接失败,稍后请重试", {icon: 5});
-                            }
-                        });
-                    }) //弹框结束
-                }); //单击事件
-            } //编辑结束
-            else if (layEvent === 'delete') {
-                layer.confirm('确定删除该图书吗？', function (index) {
-                    layer.close(index);
-                    layer.load();
-                    $.ajax({
-                        url: 'http://localhost:8080/manager/deletebook',
-                        type: 'post',
-                        data: {
-                            id: data.book_ID,
-                        },
-                        dataType: 'json',
-                        success: function (msg) {
-                            msg = JSON.stringify(msg);
-                            msg = $.parseJSON(msg);
-                            if (msg.result == 0) {
-                                layer.msg("移除成功!", {icon: 1});
-                                layer.closeAll();
-                            } else if (msg.result == -1) {
-                                layer.msg("移除失败!", {icon: 5});
-                                layer.closeAll();
-                            }
-                        },
-                        error: function () {
-                            layer.msg("服务器连接失败,稍后请重试", {icon: 5});
-                        }
-                    });
-                    table.reload('testReload', {
-                        url: 'http://localhost:8080/user/queryshoppingcart',
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        },
-                    });
-
-                });
-            } //删除结束
-        }); //end
-
-        //---------------表格搜索重载----------------
-        //监听是否点击搜索框
-        $('.demoTable .layui-btn').on('click', function () {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
-        $("#btn2").click(function () {
-            // var a= {
-            //     leader: $("#leader").val(),
-            //     productManager: $("#productManager").val(),
-            //     planQualityManager: $("#planQualityManager").val(),
-            //     devManager: $("#devManager").val(),
-            //     testManager: $("#testManager").val(),
-            // };
-
+        $("#btn1").click(function () {
+            var file = $('#fileInput')[0].files[0];
+            var formData = new FormData();
+            formData.append('file', file);
             $.ajax({
-                url: 'http://localhost:8080/student/team/isBuild/update',
+                url: 'http://localhost:8080/upload',
                 type: 'post',
-                // data: a,
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (objectRequest) {
-                    objectRequest = JSON.stringify(objectRequest);
-                    objectRequest = $.parseJSON(objectRequest);
-                    if (objectRequest.status == 1) { //成功
-                        layer.msg("更改成功!", {icon: 1});
+                data: formData,
+                processData: false,
+                contentType: false,
+                crossDomain: true,
+                success: function (result) {
+                    console.log(result);
+                    result=$.parseJSON(result);
+                    console.log(result);
+                    if (result.status == 0) { //成功
+                        layer.msg(result.object, {icon: 1});
                     } else { //失败
-                        layer.msg("更改失败!", { icon: 5 });
+                        layer.msg(result.object, { icon: 5 });
                     }
                 },
                 error: function () {
@@ -293,9 +83,6 @@
         });
 
     });
-
-
-
 </script>
 </body>
 

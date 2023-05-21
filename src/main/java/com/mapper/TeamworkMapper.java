@@ -16,4 +16,5 @@ public interface TeamworkMapper {
     List<Teamwork> getAllTeamworks();
 
     Teamwork getTeamworkByTeamworkID(int TeamworkID);
+    Teamwork getTeamworkByID1(int TeamworkID,int teamID);
 }

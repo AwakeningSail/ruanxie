@@ -7,24 +7,33 @@ public class Teamwork {
     private WorkArrangements workArrangements; // 添加 JSONObject 类型的属性
     private int meetingMinutes;
     private AssignmentResults assignmentResults; // 添加 JSONObject 类型的属性
-    private int score;
+    private TeamScores teamScores;
     private int teamworkid;
 
 
     public Teamwork(com.Data.Teamwork teamwork){
         if(teamwork==null)return;
         this.meetingMinutes=teamwork.getMeetingMinutes();
-        this.score=teamwork.getScore();
         this.teamID=teamwork.getTeamID();
         if(teamwork.getAssignmentResults()!=null)this.assignmentResults=new AssignmentResults(teamwork.getAssignmentResults());
         else this.assignmentResults=new AssignmentResults();
         if(teamwork.getWorkArrangement()!=null)this.workArrangements=new WorkArrangements(teamwork.getWorkArrangement());
         else this.workArrangements=new WorkArrangements();
         this.teamworkid=teamwork.getTeamworkid();
+        if(teamwork.getScore()!=null)this.teamScores=new TeamScores(teamwork.getScore());
+        else this.teamScores=new TeamScores();
     }
 
-    public Teamwork() {
-
+    @Override
+    public String toString() {
+        return "Teamwork{" +
+                "teamID=" + teamID +
+                ", workArrangements=" + workArrangements +
+                ", meetingMinutes=" + meetingMinutes +
+                ", assignmentResults=" + assignmentResults +
+                ", teamScores=" + teamScores +
+                ", teamworkid=" + teamworkid +
+                '}';
     }
 
     @Override
@@ -32,12 +41,12 @@ public class Teamwork {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teamwork teamwork = (Teamwork) o;
-        return teamID == teamwork.teamID && meetingMinutes == teamwork.meetingMinutes && score == teamwork.score && teamworkid == teamwork.teamworkid && Objects.equals(workArrangements, teamwork.workArrangements) && Objects.equals(assignmentResults, teamwork.assignmentResults);
+        return teamID == teamwork.teamID && meetingMinutes == teamwork.meetingMinutes && teamworkid == teamwork.teamworkid && Objects.equals(workArrangements, teamwork.workArrangements) && Objects.equals(assignmentResults, teamwork.assignmentResults) && Objects.equals(teamScores, teamwork.teamScores);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teamID, workArrangements, meetingMinutes, assignmentResults, score, teamworkid);
+        return Objects.hash(teamID, workArrangements, meetingMinutes, assignmentResults, teamScores, teamworkid);
     }
 
     public int getTeamID() {
@@ -72,12 +81,12 @@ public class Teamwork {
         this.assignmentResults = assignmentResults;
     }
 
-    public int getScore() {
-        return score;
+    public TeamScores getTeamScores() {
+        return teamScores;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setTeamScores(TeamScores teamScores) {
+        this.teamScores = teamScores;
     }
 
     public int getTeamworkid() {
@@ -88,25 +97,17 @@ public class Teamwork {
         this.teamworkid = teamworkid;
     }
 
-    public Teamwork(int teamID, WorkArrangements workArrangements, int meetingMinutes, AssignmentResults assignmentResults, int score, int teamworkid) {
+    public Teamwork(int teamID, WorkArrangements workArrangements, int meetingMinutes, AssignmentResults assignmentResults, TeamScores teamScores, int teamworkid) {
         this.teamID = teamID;
         this.workArrangements = workArrangements;
         this.meetingMinutes = meetingMinutes;
         this.assignmentResults = assignmentResults;
-        this.score = score;
+        this.teamScores = teamScores;
         this.teamworkid = teamworkid;
     }
 
-    @Override
-    public String toString() {
-        return "Teamwork{" +
-                "teamID=" + teamID +
-                ", workArrangements=" + workArrangements +
-                ", meetingMinutes=" + meetingMinutes +
-                ", assignmentResults=" + assignmentResults +
-                ", score=" + score +
-                ", teamworkid=" + teamworkid +
-                '}';
+    public Teamwork() {
+
     }
 }
 /*
